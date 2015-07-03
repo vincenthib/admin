@@ -18,6 +18,27 @@
 
 				<!-- Your Page Content Here -->
 
+				<div class="row">
+					<div class="col-md-6">
+						<?php include 'partials/visitor.php' ?>
+					</div>
+					
+					<div class="col-md-6">
+						<?php include 'partials/area.php' ?>
+					</div>
+				</div>	
+
+				<div class="row">
+					<div class="col-md-6">
+						<?php include 'partials/browser-usage.php' ?>
+					</div>
+					
+					<div class="col-md-6">
+						<?php //include 'nico' ?>
+					</div>
+				</div>	
+
+
 			</section><!-- /.content -->
 
 <?php include_once 'partials/footer-charts.php' ?>
