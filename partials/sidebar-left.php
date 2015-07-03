@@ -30,7 +30,7 @@
 				<ul class="sidebar-menu">
 					<li class="header">HEADER</li>
 					<!-- Optionally, you can add icons to the links -->
-					<li class="active"><a href="#"><i class='fa fa-link'></i> <span>Link</span></a></li>
+					<li class="active"><a href="partials/mailbox/mailbox.php"><i class='fa fa-link'></i> <span>Mailbox</span></a></li>
 					<li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
 					<li class="treeview">
 						<a href="modules/mailbox/index.php"><i class='fa fa-envelope'></i> <span>Mailbox</span> <i class="fa fa-angle-left pull-right"></i></a>
