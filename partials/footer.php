@@ -11,7 +11,7 @@
 		</footer>
 
 		<!-- Control Sidebar -->
-		<?php include_once 'partials/sidebar-right.php' ?>
+		<?php include_once $root_dir.'/partials/sidebar-right.php' ?>
 
 </div><!-- ./wrapper -->
 

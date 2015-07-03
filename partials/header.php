@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 <?php
-require_once '../config.php';
+require_once 'config.php';
 require_once $root_dir.'/inc/func.php';
 require_once $root_dir.'/inc/db.php';
 ?>

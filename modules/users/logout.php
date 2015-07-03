@@ -1,5 +1,6 @@
 <?php
-include_once 'partials/header.php';
+include_once 'config.php';
+include_once $root_dir.'/partials/header.php';
 
 // On détruit toutes les variables dans $_SESSION
 session_unset();
@@ -17,4 +18,4 @@ setcookie('rememberme_token', false, 1);
 echo '<div class="alert alert-success" role="success">Déconnexion réussie</div>';
 echo redirectJS('index.php', 2);
 
-include_once 'partials/footer.php';
+include_once $root_dir.'/partials/footer.php';

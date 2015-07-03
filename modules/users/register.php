@@ -1,5 +1,6 @@
 <?php
-include_once 'partials/header.php';
+include_once 'config.php';
+include_once $root_dir.'/partials/header.php';
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -220,5 +221,5 @@ if (!empty($_POST)) {
 <?php
 end:
 
-include_once 'partials/footer.php';
+include_once $root_dir.'/partials/footer.php';
 ?>
