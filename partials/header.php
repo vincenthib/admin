@@ -1,3 +1,4 @@
+<?php require_once 'config.php' ?>
 <?php require_once $root_dir.'/inc/db.php' ?>
 <!DOCTYPE html>
 <!--
