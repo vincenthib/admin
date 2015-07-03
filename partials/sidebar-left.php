@@ -40,6 +40,7 @@
 							<li><a href="modules/mailbox/compose.php">Compose</a></li>
 						</ul>
 					</li>
+					<li><a href="modules/stats/index.php"><i class='fa fa-bar-chart'></i> <span>Stats</span></a></li>
 				</ul><!-- /.sidebar-menu -->
 			</section>
 			<!-- /.sidebar -->

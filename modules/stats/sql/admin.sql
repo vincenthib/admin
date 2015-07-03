@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 03 Juillet 2015 à 18:22
+-- Généré le :  Ven 03 Juillet 2015 à 18:25
 -- Version du serveur :  5.6.21
 -- Version de PHP :  5.6.3
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `admin`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `browsers`
+--
+
+CREATE TABLE IF NOT EXISTS `browsers` (
+`id` int(11) NOT NULL,
+  `browser` varchar(255) NOT NULL,
+  `browser_users` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `browsers`
+--
+
+INSERT INTO `browsers` (`id`, `browser`, `browser_users`) VALUES
+(1, 'Chrome', 100),
+(5, 'Safari', 200),
+(6, 'Firefox', 300),
+(7, 'Opera', 50),
+(8, 'Internet Explorer', 250);
 
 -- --------------------------------------------------------
 
@@ -51,6 +74,12 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `newsle
 --
 
 --
+-- Index pour la table `browsers`
+--
+ALTER TABLE `browsers`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
@@ -60,6 +89,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour les tables exportées
 --
 
+--
+-- AUTO_INCREMENT pour la table `browsers`
+--
+ALTER TABLE `browsers`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
