@@ -1,8 +1,9 @@
 <?php ob_start(); ?>
-<?php require_once 'modules/users/inc/config.php' ?>
-<?php require_once 'modules/users/inc/func.php' ?>
-<?php require_once 'modules/users/inc/db.php' ?>
-
+<?php
+require_once '../config.php';
+require_once $root_dir.'/inc/func.php';
+require_once $root_dir.'/inc/db.php';
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -10,6 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
+	<base href="<?= $root_path ?>">
 	<meta charset="UTF-8">
 	<title>AdminLTE 2 | Dashboard</title>
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -26,6 +28,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	apply the skin class to the body tag so the changes take effect.
 	-->
 	<link href="css/skins/skin-blue.min.css" rel="stylesheet" type="text/css" />
+
+	<?php
+	if (!empty($css_files)) {
+		foreach($css_files as $css_file => $css_media) {
+	?>
+	<link href="<?= $css_file ?>" rel="stylesheet" type="text/css" <?= !empty($css_media) ? 'media="'.$css_media.'"' : '' ?> />
+	<?php
+		}
+	}
+	?>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,10 +81,10 @@ desired effect
 			</a>
 
 			<!-- Header Navbar -->
-			<?php include_once 'partials/navbar.php' ?>
+			<?php include_once $root_dir.'/partials/navbar.php' ?>
 		</header>
 		<!-- Left side column. contains the logo and sidebar -->
-		<?php include_once 'partials/sidebar-left.php' ?>
+		<?php include_once $root_dir.'/partials/sidebar-left.php' ?>
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
