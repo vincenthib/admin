@@ -13,10 +13,19 @@
 				</ol>
 			</section>
 
-			<!-- Main content -->
+
+              <!-- Main content -->
 			<section class="content">
 
 				<!-- Your Page Content Here -->
+				<div class="row">					
+					<div class="col-md-6">
+						<?php include_once 'partials/visitor.php' ?>
+					</div>
+					<div class="col-md-6">
+						<?php include_once 'partials/area.php' ?>
+					</div>
+				</div>
 
 			</section><!-- /.content -->
 
