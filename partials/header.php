@@ -1,3 +1,8 @@
+<?php ob_start(); ?>
+<?php require_once 'modules/users/inc/config.php' ?>
+<?php require_once 'modules/users/inc/func.php' ?>
+<?php require_once 'modules/users/inc/db.php' ?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
