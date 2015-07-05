@@ -1,23 +1,32 @@
-<?php include_once 'partials/header.php' ?>
+<?php
 
-			<!-- Content Header (Page header) -->
-			<section class="content-header">
-				<h1>
-					Page Header
-					<small>Optional description</small>
-				</h1>
-				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-					<li class="active">Here</li>
-				</ol>
-			</section>
+try {
+	require_once 'config.php';
+	require $root_dir.'/modules/users/user.php';
 
-			<!-- Main content -->
-			<section class="content">
+	//echo 'Utilisateur connecté : ', (user_isLogged() ? 'true' : 'false');
 
-				<!-- Your Page Content Here -->
-				
+	//$error = "Erreur pour tester";
+    //throw new Exception($error);
 
-			</section><!-- /.content -->
+	if ( user_isLogged() ) {
 
-<?php include_once 'partials/footer.php' ?>
+		//$url = '/starter.html'; // Pour débuter
+		$url = '/starter.php';  // La même avec découpage
+		//$url = '/index.html';   // Le dashboard
+		//$url = '/index2.html';  // Un autre dashboard
+
+	} else {
+
+		$url = '/modules/users/login_new.php';
+
+	}
+	ob_get_clean();
+	header( 'Location: '.$url );
+
+} catch ( Exception $e ) {
+
+	header('Content-Type: text/plain; charset=utf-8');
+    exit('Error >> '.$e->getMessage());
+
+}

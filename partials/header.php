@@ -1,8 +1,8 @@
-<?php ob_start(); ?>
 <?php
-require_once 'config.php';
-require_once $root_dir.'/inc/func.php';
-require_once $root_dir.'/inc/db.php';
+require dirname(__DIR__).'/config.php';
+require $root_dir.'/inc/func.php';
+require $root_dir.'/inc/db.php';
+require $root_dir.'/modules/users/user.php';
 ?>
 <!DOCTYPE html>
 <!--
@@ -73,7 +73,7 @@ desired effect
 		<header class="main-header">
 
 			<!-- Logo -->
-			<a href="index2.html" class="logo">
+			<a href="index.php" class="logo">
 				<!-- mini logo for sidebar mini 50x50 pixels -->
 				<span class="logo-mini"><b>A</b>LT</span>
 				<!-- logo for regular state and mobile devices -->

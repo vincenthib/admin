@@ -1,6 +1,6 @@
 <?php
-include_once 'config.php';
-include_once $root_dir.'/partials/header.php';
+include '../../partials/header.php';
+require 'func.php';
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -10,7 +10,7 @@ use Facebook\GraphUser;
 
 FacebookSession::setDefaultApplication(FB_APP_ID, FB_APP_SECRET);
 
-$helper = new FacebookRedirectLoginHelper($root_path.'/register.php');
+$helper = new FacebookRedirectLoginHelper($root_path.'/modules/users/register.php');
 
 try {
 
@@ -118,7 +118,7 @@ if (!empty($_POST)) {
 			$errors['email'] = "L'email est déjà pris";
 		} else {
 
-			$crypted_password = password_hash($password, PASSWORD_BCRYPT);
+			$crypted_password = cryptage_hash( $password );
 
 			$query = $db->prepare('INSERT INTO users (lastname, firstname, email, pass, newsletter, register_date) VALUES (:lastname, :firstname, :email, :password, :newsletter, NOW())');
 			$query->bindValue('lastname', $lastname);
