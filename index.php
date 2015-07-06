@@ -15,6 +15,8 @@
 			<!-- Main content -->
 			<section class="content">
 
+				<?php debug($_SESSION) ?>
+
 				<!-- Your Page Content Here -->
 				
 
