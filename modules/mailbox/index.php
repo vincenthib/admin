@@ -1,11 +1,29 @@
 <?php require_once 'config.php' ?>
 <?php include_once $root_dir.'/partials/header.php' ?>
+<?php require_once '../../inc/db.php' ?>
+
+<?php
+//compte des mails
+      $bindings = array();
+
+      $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
+
+      foreach($bindings as $key => $value) {
+         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+         $query->bindValue($key, $value, $type);
+      }
+
+      $query->execute();
+      $result = $query->fetch();
+      $count_mail = $result['count_mail'];
+//fin compte des mails
+?>
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
             Mailbox
-            <small>13 new messages</small>
+            <small><?= $count_mail ?></small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -27,7 +45,7 @@
                 </div>
                 <div class="box-body no-padding">
                   <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right">12</span></a></li>
+                    <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
                     <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
                     <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
                     <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
@@ -83,15 +101,27 @@
                   <div class="table-responsive mailbox-messages">
                     <table class="table table-hover table-striped">
                       <tbody>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">5 mins ago</td>
-                        </tr>
-                        <tr>
+                        <?php
+//affichage liste mail
+
+                            $file_mails = $db->query('SELECT * FROM mailbox')->fetchAll();
+
+                             foreach($file_mails as $file_mail){
+                          ?>
+                            <tr>
+                                <td><input type="checkbox" /><?= $file_mail['checkbox'] ?></td>
+                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
+                                <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
+                                <td class="mailbox-attachment"><?= $file_mail['piece-jointe'] ?></td>
+                                <td class="mailbox-date"><?= $file_mail['received'] ?></td>
+                            </tr>
+                        <?php
+                          }
+ //fin liste mail
+                          ?>
+
+                        <!--tr>
                           <td><input type="checkbox" /></td>
                           <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
                           <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
@@ -202,7 +232,7 @@
                           <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
                           <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
                           <td class="mailbox-date">15 days ago</td>
-                        </tr>
+                        </tr-->
                       </tbody>
                     </table><!-- /.table -->
                   </div><!-- /.mail-box-messages -->

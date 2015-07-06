@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Webforce 3 - chat</title>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+ <style>
+   body {
+     margin: 0;
+   }
+   #messages {
+     min-height: 300px;
+     overflow: scroll;
+     background-color: #aaa;
+   }
+   form {
+     position: fixed;
+     bottom: 0;
+     width: 100%;
+     display: flex;
+   }
+
+   #message {
+     flex: 10;
+   }
+
+   #submit {
+     flex: 1;
+   }
+
+   div #error {
+     position: fixed;
+     bottom: 20px;
+     font-size: 0.8em;
+     color: red;
+     width: 100%;
+     text-align: center;
+     font-family: sans-serif;
+   }
+ </style>
+
+ <script>
+ var $messages; // la liste des messages
+ var $message; // le champ input
+ var $error; // la div contenant les erreurs affichÃ©es
+
+ function onFormSubmit(event) {
+     event.preventDefault();
+
+     postMessage($message.val());
+
+     $message.attr('disabled', 'disabled');
+ }
+
+ function getMessages() {
+     // a. lancer un appel AJAX pour rÃ©cupÃ©rer les messages
+     // sur l'URL :
+     // http://192.168.0.10:3000/messages
+     // b. en cas de rÃ©ponse OK afficher les messages dans la
+     // div#messages
+     // c. en cas d'erreur afficher injecter une div#alerte en bas
+     // de la div#messages
+     var xhr = $.getJSON('http://192.168.0.10:3000/messages');
+
+     // ecoute rÃ©ponse positive du serveur
+     // data -> rÃ©ponse, cad, les messages du serveur
+     xhr.done(function (data) {
+       var messageList = '';
+
+       data.messages.reverse().forEach(function (message) {
+         messageList += '<li>' + message + '</li>';
+       });
+
+       $messages
+         .empty() // vide la liste des messages
+         .html(messageList); // injecte de l'HTML avec les messages
+     })
+ }
+
+ // 7. effacer le champ texte lors de l'envoi
+ // Le champ texte doit :
+ // - Ãªtre dÃ©sactivÃ© le temps que le serveur est rÃ©pondu
+ // - Ãªtre effacÃ© lors que le message a Ã©tÃ© envoyÃ©
+
+ setInterval(getMessages, 1000);
+
+ function postMessage(data) {
+   // a. quelle mÃ©thode HTTP ? get ou post ?
+   // b. quelle mÃ©thode ajax via jQuery utiliser ?
+   //   $.ajax, $.get, $.getJSON, $.post ?
+   // c. Ã©tants donnÃ©s:
+   // - url: http://192.168.0.10:3000/message
+   // coder l'envoi du message
+   var xhr = $.post('http://192.168.0.10:3000/message', {
+     message: data
+   });
+
+   // function appelÃ©e lorsque le serveur aura rÃ©pondu
+   // data -> ce sont les donnÃ©es renvoyÃ©es par le serveur
+   //      -> c'est la rÃ©ponse du serveur
+   xhr.done(function (data) {
+     $message.val('');
+     $error.hide();
+   });
+
+   // lorsqu'il y a une erreur
+   xhr.fail(function (jqXHR) {
+     $error
+       .text('Failed to post message')
+       .show();
+   });
+
+   // dans tous les cas de figure (success, error) ce code-ci
+   // sera exÃ©cutÃ©
+   xhr.always(function (jqXHR) {
+     $message.removeAttr('disabled');
+   });
+ }
+
+ $(document).ready(function () {
+   $messages = $('#messages');
+   $message = $('#message');
+   $error = $('#error');
+
+   $('form').on('submit', onFormSubmit);
+ })
+ </script>
+</head>
+<body>
+ <ul id="messages"></ul>
+ <div id="error"></div>
+ <form>
+   <input type="text" id="message" placeholder="Entrer un message">
+   <input type="submit" id="submit" value="OK">
+ </form>
+</body>
+</html>

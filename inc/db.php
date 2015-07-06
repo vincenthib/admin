@@ -20,6 +20,6 @@ try {
 }
 
 function getDb($db) {
-  global $db_options;
- return new PDO('mysql:host='.HOST.';dbname='.$db.'', USER, PASS, $db_options);
+	global $db_options;
+	return new PDO('mysql:host='.HOST.';dbname='.$db.'', USER, PASS, $db_options);
 }
