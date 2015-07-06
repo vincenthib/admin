@@ -1,5 +1,7 @@
-<?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
+<?php require_once 'config.php';
+      require_once 'db.php';
+ ?>
+<?php include_once $root_dir.'/partials/header.php';?>
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
@@ -13,11 +15,27 @@
 				</ol>
 			</section>
 
-			<!-- Main content -->
+      <!-- Main content -->
 			<section class="content">
 
 				<!-- Your Page Content Here -->
+				<div class="row">
+					<div class="col-md-6">
+						<?php include_once 'partials/visitor.php' ?>
+					</div>
+					<div class="col-md-6">
+						<?php include_once 'partials/area.php' ?>
+					</div>
+				</div>
 
-			</section><!-- /.content -->
+				<div class="row">
+					<div class="col-md-6">
+						<?php include 'partials/browser-usage.php' ?>
+					</div>
+
+					<div class="col-md-6">
+						<?php include "partials/donut-genres.php"; ?>
+					</div>
+				</div>
 
 <?php include_once 'partials/footer-charts.php' ?>
