@@ -10,7 +10,7 @@ use Facebook\GraphUser;
 
 FacebookSession::setDefaultApplication(FB_APP_ID, FB_APP_SECRET);
 
-$helper = new FacebookRedirectLoginHelper($root_path.'/register.php');
+$helper = new FacebookRedirectLoginHelper($root_path.'modules/users/register.php');
 
 try {
 
@@ -41,7 +41,7 @@ try {
 		if (!empty($fb_user)) {
 			$_SESSION['user_id'] = $fb_user['id'];
 			$_SESSION['firstname'] = $fb_user['firstname'];
-			header('Location: index.php');
+			header('Location: '.$root_path.'index.php');
 			exit();
 		}
 
@@ -60,7 +60,7 @@ try {
 		} else {
 			$_SESSION['user_id'] = $user_id;
 			$_SESSION['firstname'] = $firstname;
-			header('Location: index.php');
+			header('Location: '.$root_path.'index.php');
 			exit();
 		}
 	}
@@ -137,7 +137,7 @@ if (!empty($_POST)) {
 				$_SESSION['firstname'] = $firstname;
 
 				echo '<div class="alert alert-success" role="success">Authentification réussie</div>';
-				echo redirectJS('index.php', 2);
+				echo redirectJS($root_path.'index.php', 2);
 			}
 			goto end;
 		}
