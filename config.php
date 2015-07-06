@@ -1,4 +1,6 @@
 <?php
+require_once 'inc/db.php';
+
 $protocol = (@$_SERVER['HTTPS'] == 'on' ? 'https' : 'http');
 $domain = $_SERVER['HTTP_HOST'];
 $root_dir = str_replace('\\', '/', __DIR__);

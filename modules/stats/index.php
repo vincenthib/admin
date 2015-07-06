@@ -1,5 +1,7 @@
-<?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
+<?php require_once 'config.php';
+      require_once 'db.php';
+ ?>
+<?php include_once $root_dir.'/partials/header.php';?>
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
@@ -14,10 +16,8 @@
 			</section>
 
 			<!-- Main content -->
-			<section class="content">
+			<?php require_once "donut-genres.php"; ?>
 
-				<!-- Your Page Content Here -->
 
-			</section><!-- /.content -->
 
-<?php include_once 'partials/footer-charts.php' ?>
+<?php include_once 'partials/footer-charts3.php' ?>
