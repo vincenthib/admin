@@ -21,6 +21,7 @@ foreach ($browsers as $browser) {
 	$i++;
 }
 
+sleep(2);
 echo json_encode($piebrowsers);
 
 ?>

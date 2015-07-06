@@ -28,7 +28,7 @@ define('FACEBOOK_SDK_ROOT_PATH', '/inc/facebook');
 define('FACEBOOK_SDK_V4_SRC_DIR', $root_dir.FACEBOOK_SDK_ROOT_PATH.'/src/Facebook/');
 require $root_dir .FACEBOOK_SDK_ROOT_PATH.'/autoload.php';
 
-define('FB_APP_ID', '907161592677300');
-define('FB_APP_SECRET', '6f12d1c6c478f43846ed7b797437fca9');
+define('FB_APP_ID', '');
+define('FB_APP_SECRET', '');
 
 define('FB_REGISTER_LINK', $root_path.'modules/users/register.php');

@@ -11,8 +11,8 @@
 ?> 
 
 
-<div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+<div class="info-box bg-red">
+                <span class="info-box-icon"><i class="fa fa-files-o"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Nombres de Film en Base de donnés</span>
                   <span class="info-box-number"><?= $count_movies ?></span>

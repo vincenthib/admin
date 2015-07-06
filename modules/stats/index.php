@@ -21,7 +21,7 @@
 				<!-- Your Page Content Here -->
 				<div class="row">
 					<div class="col-md-6">
-						<?php include_once 'partials/visitor.php' ?>
+						<?php include_once 'partials/users.php' ?>
 					</div>
 					<div class="col-md-6">
 						<?php include_once 'partials/area.php' ?>
@@ -37,14 +37,27 @@
 						<?php include "partials/donut-genres.php"; ?>
 					</div>
 				</div>
+
+
 				<div class="row">
-					<div class="col-md-6">
-
-						<?php include "partials/inventory.php"; ?>
-
+					
+					<div class="col-md-3">
+						<?php include "partials/nb-movies.php"; ?>
 					</div>
-				</div>
+				
+					<div class="col-md-3">
+						<?php include "partials/user_numb.php"; ?>
+					</div>
 
+					<div class="col-md-3">
+						<?php include "partials/visitors.php"; ?>
+					</div>
+
+					<div class="col-md-3">
+						<?php include "partials/genres.php"; ?>
+					</div>
+
+				</div>
 
 				<div class="row">
 					<div class="col-md-12">
