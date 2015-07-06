@@ -34,7 +34,7 @@
 					</div>
 
 					<div class="col-md-6">
-						<?php require_once "donut-genres.php"; ?>
+						<?php include "partials/donut-genres.php"; ?>
 					</div>
 				</div>
 
