@@ -37,15 +37,7 @@
 						<?php include "partials/donut-genres.php"; ?>
 					</div>
 				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-
-						<?php include "partials/inventory.php"; ?>
-
-					</div>
-				</div>
-
+				
 				<div class="row">
 					
 					<div class="col-md-3">

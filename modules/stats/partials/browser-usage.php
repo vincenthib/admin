@@ -17,9 +17,7 @@
 			</div>
 
 			<div class="col-md-4">
-				<ul class="chart-legend clearfix">
-					
-				</ul>
+				<ul class="chart-legend clearfix"></ul>
 			</div>
 		</div>
 
