@@ -96,6 +96,6 @@ $pie_data = array(
 		</div>
 	</div>
 	<div class="box-body">
-		<canvas id="pieChart" height="250"></canvas>
+		<canvas id="pieChart-genres" height="250"></canvas>
 	</div><!-- /.box-body -->
 </div><!-- /.box -->

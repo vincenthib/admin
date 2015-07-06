@@ -15,7 +15,6 @@ echo $root_path.'<br>';
 require_once $root_dir.'/inc/func.php';
 require_once $root_dir.'/inc/db.php';
 
-
 define('FACEBOOK_SDK_ROOT_PATH', '/inc/facebook');
 
 define('FACEBOOK_SDK_V4_SRC_DIR', $root_dir.FACEBOOK_SDK_ROOT_PATH.'/src/Facebook/');
