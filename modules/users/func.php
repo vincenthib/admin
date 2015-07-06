@@ -59,4 +59,3 @@ function getRememberMe($expiration) {
 	}
 	return false;
 }
-
