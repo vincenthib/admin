@@ -7,7 +7,7 @@ use Facebook\FacebookRedirectLoginHelper;
 
 FacebookSession::setDefaultApplication(FB_APP_ID, FB_APP_SECRET);
 
-$helper = new FacebookRedirectLoginHelper($root_path.'/register.php');
+$helper = new FacebookRedirectLoginHelper($root_path.'modules/users/register.php');
 $loginUrl = $helper->getLoginUrl(
 	array(
 		'scope' => 'public_profile,email'
@@ -66,6 +66,7 @@ if (!empty($_POST)) {
 
 				$_SESSION['user_id'] = $user['id'];
 				$_SESSION['firstname'] = $user['firstname'];
+
 
 				echo '<div class="alert alert-success" role="success">Authentification réussie</div>';
 				echo redirectJS('index.php', 2);

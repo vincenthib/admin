@@ -1,0 +1,11 @@
+.wysihtml5-toolbar{
+
+}
+
+.wysihtml5-toolbar ul{
+	list-style: none;
+}
+
+.wysihtml5-toolbar ul li {
+	display: inline-block;
+}

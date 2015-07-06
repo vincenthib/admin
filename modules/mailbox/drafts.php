@@ -1,27 +1,46 @@
-<?php
-    require_once 'config.php';
-    include_once $root_dir.'/partials/header.php';
-    require_once '../../inc/db.php';
-?>
+<?php require_once 'config.php' ?>
+<?php include_once $root_dir.'/partials/header.php' ?>
+<?php require_once '../../inc/db.php' ?>
 
 <?php
 //compte des mails
+      $bindings = array();
 
       $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
+
+      foreach($bindings as $key => $value) {
+         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+         $query->bindValue($key, $value, $type);
+      }
 
       $query->execute();
       $result = $query->fetch();
       $count_mail = $result['count_mail'];
 //fin compte des mails
 
+//compte des drafts
+      $bindings_draft = array();
+
+      $query = $db->prepare('SELECT COUNT(*) as count_drafts FROM mailbox WHERE draft = 1');
+
+      foreach($bindings_draft as $key => $value) {
+         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+         $query->bindValue($key, $value, $type);
+      }
+
+      $query->execute();
+      $result = $query->fetch();
+      $count_drafts = $result['count_drafts'];
+//fin compte des drafts
+
 $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
-$search = !empty($_GET['search']) ? $_GET['search'] : '';
 
 ?>
 <style>
 .head_mail{
   border: none;
   background-color: #f9f9f9;
+  font-family: sans-serif;
 }
 </style>
 
@@ -51,11 +70,11 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
                 </div>
                 <div class="box-body no-padding">
                   <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                    <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                    <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
-                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+                    <li class="active"><a href="modules/mailbox/index.php"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
+                    <li><a href="modules/mailbox/sent.php"><i class="fa fa-envelope-o"></i> Sent</a></li>
+                    <li><a href="modules/mailbox/drafts.php"><i class="fa fa-file-text-o"></i> Drafts<span class="label label-primary pull-right"><?= $count_drafts ?></span></a></li>
+                    <li><a href="modules/mailbox/junk.php"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
+                    <li><a href="modules/mailbox/trash.php"><i class="fa fa-trash-o"></i> Trash</a></li>
                   </ul>
                 </div><!-- /.box-body -->
               </div><!-- /. box -->
@@ -81,54 +100,37 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
                   <h3 class="box-title">Inbox</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
-                    <form method-"GET" action="modules/mailbox/index.php?sort=<?= $sort ?>">
-                      <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" value="<?= $search ?>" method="GET"/>
+                      <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" method="GET" action="index.php"/>
                       <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
 
-<?php
+<!--?php
 //debut search
-      $count_results = 0;
-      $search_mails = array();
+    //if(!empty($_GET['search'])){
 
-$bindings = array();
-$sql = 'SELECT * FROM mailbox ';
+        $search_word = $_GET['search'];
 
-if (!empty($search)) {
-
-    $sql .= ' WHERE objet like :search OR message like :search ';
-
-    $bindings['search'] = '%'.$search.'%';
-    //$count_results = $query->rowCount();
- };
-
-$sql .= ' ORDER BY date '.$sort;
-
-$query = $db->prepare($sql);
-foreach($bindings as $key => $value) {
-   $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
-   $query->bindValue($key, $value, $type);
-}
-
-$query->execute();
-$file_mails = $query->fetchAll();
+        $search = $db->query('SELECT * FROM mailbox like '.'%'.$search_word.'%'.' ORDER BY date')->fetchAll();
+        $query->bindValue('search', '%'.$search.'%');
+        $query->execute();
+        $search_mails = $query->fetch();
+     //};
 
 //affichage resultat recherche
-     /* foreach($search_mails as $search_mail){
-?>
-                <tr>
-                    <h1 class="page-header"><?= $count_results ?> search results for <?= !empty($search) ? '"'.$search.'"' : '' ?></h1>
+      foreach($search_mails as $search_mail){
+?-->
+                <!--tr>
                     <td><input type="checkbox" name="checkbox" value="1" ></td>
                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
                     <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $search_mail['id'] ?>"><?= $search_mail['destinataire'] ?></a></td>
                     <td class="mailbox-subject"><?= $search_mail['objet'] ?></td>
                     <td class="mailbox-attachment"><?= $search_mail['piece-jointe'] ?></td>
                     <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
-                </tr>
-<?php
-}*/
+                </tr-->
+<!--?php
+}
 //fin affichage resultat recherche
-?>
+?-->
 
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
@@ -181,7 +183,7 @@ $file_mails = $query->fetchAll();
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-user"> Expediteur</i></button></td>
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-pencil"> Objet</i></button></td>
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-paperclip"></i></button></td>
-                              <td><a class="head_mail mailbox-name btn btn-default navbar-btn id_date" href="modules/mailbox?sort=<?= $sort== 'DESC' ? 'ASC' : 'DESC' ?>&search=<?= $search ?>"><i class="i_date glyphicon glyphicon-chevron-<?= $sort== 'DESC' ? 'up' : 'down' ?>"> Date</i></a></td>
+                              <td><a class="head_mail mailbox-name btn btn-default navbar-btn id_date" href="modules/mailbox?sort=<?= $sort== 'DESC' ? 'ASC' : 'DESC' ?>"><i class="i_date glyphicon glyphicon-chevron-<?= $sort== 'DESC' ? 'up' : 'down' ?>"> Date</i></a></td>
                             </ul>
 <!--changement chevron date OK-->
 
@@ -193,9 +195,9 @@ $file_mails = $query->fetchAll();
   //affichage liste mail
 
 
+                              $drafts = $db->query('SELECT * FROM mailbox WHERE draft =  1 ORDER BY date '.$sort)->fetchAll();
 
-
-                             foreach($file_mails as $file_mail){
+                             foreach($drafts as $draft){
     //debut timer reception OK
                                 /*$local_time = date("Y-m-d H:i:s");
                                 $to_time = strtotime($local_time);
@@ -215,9 +217,9 @@ $file_mails = $query->fetchAll();
                                 $timer = $day.' jrs '.$hours_plus.':'.$minutes.':'.$seconds;
                                 */
                               $now = new DateTime();
-                              $date_date = new DateTime($file_mail['date']);
+                              $date = new DateTime($draft['date']);
 
-                              $timer = $date_date->diff($now)->format("%a jrs %H:%i:%s");
+                              $timer = $date->diff($now)->format("%a jrs %H:%i:%s");
 
 
     //fin  timer reception
@@ -225,9 +227,9 @@ $file_mails = $query->fetchAll();
                             <tr>
                                 <td><input type="checkbox" name="checkbox" value="1" <!--?= $checkbox ? 'checked' : '' ?--></td>
                                 <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
-                                <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
-                                <td class="mailbox-attachment"><?= $file_mail['attachment'] ?></td>
+                                <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $draft['id'] ?>"><?= $draft['destinataire'] ?></a></td>
+                                <td class="mailbox-subject"><?= $draft['objet'] ?></td>
+                                <td class="mailbox-attachment"><?= $draft['attachment'] ?></td>
                                 <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
                             </tr>
                         <?php }
