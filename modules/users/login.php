@@ -7,10 +7,10 @@ use Facebook\FacebookRedirectLoginHelper;
 
 FacebookSession::setDefaultApplication(FB_APP_ID, FB_APP_SECRET);
 
-$helper = new FacebookRedirectLoginHelper($root_path.'modules/users/register.php');
+$helper = new FacebookRedirectLoginHelper(FB_REGISTER_LINK);
 $loginUrl = $helper->getLoginUrl(
 	array(
-		'scope' => 'public_profile,email'
+		'scope' => 'public_profile, email'
 	)
 );
 
@@ -30,7 +30,8 @@ if ($remember_me !== false) {
 	if (!empty($user)) {
 		$_SESSION['user_id'] = $user['id'];
 		$_SESSION['firstname'] = $user['firstname'];
-		header('Location: index.php');
+		$_SESSION['lastname'] = $user['lastname'];
+		header('Location: '.$back_link);
 		exit();
 	}
 }
@@ -66,10 +67,11 @@ if (!empty($_POST)) {
 
 				$_SESSION['user_id'] = $user['id'];
 				$_SESSION['firstname'] = $user['firstname'];
+				$_SESSION['lastname'] = $user['lastname'];
 
 
 				echo '<div class="alert alert-success" role="success">Authentification réussie</div>';
-				echo redirectJS('index.php', 2);
+				echo redirectJS($back_link, 2);
 				goto end;
 			}
 		}
