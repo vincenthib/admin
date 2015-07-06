@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `mailbox` (
   `destinataire` text NOT NULL,
   `objet` text NOT NULL,
   `attachment` varchar(255) DEFAULT NULL,
-  `received` datetime DEFAULT CURRENT_TIMESTAMP,
+  `received` datetime NOT NULL,
   `expediteur` text NOT NULL,
   `message` text NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
