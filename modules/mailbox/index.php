@@ -53,7 +53,7 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
                   <ul class="nav nav-pills nav-stacked">
                     <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
                     <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                    <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+                    <li><a href="drafts.php"><i class="fa fa-file-text-o"></i> Drafts</a></li>
                     <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
                     <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
                   </ul>
@@ -113,21 +113,6 @@ foreach($bindings as $key => $value) {
 $query->execute();
 $file_mails = $query->fetchAll();
 
-//affichage resultat recherche
-     /* foreach($search_mails as $search_mail){
-?>
-                <tr>
-                    <h1 class="page-header"><?= $count_results ?> search results for <?= !empty($search) ? '"'.$search.'"' : '' ?></h1>
-                    <td><input type="checkbox" name="checkbox" value="1" ></td>
-                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                    <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $search_mail['id'] ?>"><?= $search_mail['destinataire'] ?></a></td>
-                    <td class="mailbox-subject"><?= $search_mail['objet'] ?></td>
-                    <td class="mailbox-attachment"><?= $search_mail['piece-jointe'] ?></td>
-                    <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
-                </tr>
-<?php
-}*/
-//fin affichage resultat recherche
 ?>
 
                   </div><!-- /.box-tools -->
@@ -167,7 +152,7 @@ $file_mails = $query->fetchAll();
 
                               $query = $db->prepare('SELECT * FROM mailbox UPDATE favoris SET 1 WHERE ');
 
-                              $query->bindValue('lastname', $lastname);
+                              $query->bindValue('star', $star);
 
                               $query->execute();
                               $result = $db->lastInsertId();
@@ -187,52 +172,31 @@ $file_mails = $query->fetchAll();
 
 
                         <?php
-//classement date
-
-
   //affichage liste mail
-
-
-
-
                              foreach($file_mails as $file_mail){
     //debut timer reception OK
-                                /*$local_time = date("Y-m-d H:i:s");
-                                $to_time = strtotime($local_time);
-                                $from_time = strtotime($file_mail['date']);
-                                $time = round(abs($to_time - $from_time));
+                                $now = new DateTime();
+                                $date_date = new DateTime($file_mail['date']);
 
-                                $day = floor($time / (24*3600));
-                                $hours = floor($time / 3600);
-                                $minutes = floor(($time / 60) % 60);
-                                $seconds = $time % 60;
-
-                                if($hours>24){
-                                    $day = $day + floor($hours / 24);
-                                    $hours_plus = ($hours - (24 * $day));
-                                };
-
-                                $timer = $day.' jrs '.$hours_plus.':'.$minutes.':'.$seconds;
-                                */
-                              $now = new DateTime();
-                              $date_date = new DateTime($file_mail['date']);
-
-                              $timer = $date_date->diff($now)->format("%a jrs %H:%i:%s");
-
-
+                                $timer = $date_date->diff($now)->format("%a jrs %H:%i:%s");
     //fin  timer reception
+                                   if(!empty($file_mail['attachment'])){
+                                        $paperclip = 'glyphicon-paperclip';
+                                        } else {
+                                            $paperclip = '';
+                                      }
                           ?>
                             <tr>
-                                <td><input type="checkbox" name="checkbox" value="1" <!--?= $checkbox ? 'checked' : '' ?--></td>
+                                <td><input type="checkbox" name="checkbox" value="1" ><!--?= $checkbox ? 'checked' : '' ?--></td>
                                 <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
                                 <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
                                 <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
-                                <td class="mailbox-attachment"><?= $file_mail['attachment'] ?></td>
+                                <td class="mailbox-attachment"><i class="attachment glyphicon <?= $paperclip ?>"></td>
                                 <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
                             </tr>
-                        <?php }
+                         <?php
  //fin liste mail
-
+                            }
                           ?>
 
                       </tbody>
