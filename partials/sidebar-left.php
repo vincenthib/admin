@@ -29,18 +29,57 @@
 				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
 					<li class="header">HEADER</li>
-					<!-- Optionally, you can add icons to the links -->
-					<li class="active"><a href="partials/mailbox/mailbox.php"><i class='fa fa-link'></i> <span>Mailbox</span></a></li>
-					<li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
-					<li class="treeview">
-						<a href="modules/mailbox/index.php"><i class='fa fa-envelope'></i> <span>Mailbox</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+					<?php
+
+					$pages = array(
+						'modules/calendar/index.php' => array('fa-calendar', 'Calendar'),
+						'modules/chat/index.php' => array('fa-comments', 'Chat'),
+						'modules/stats/index.php' => array('fa-bar-chart', 'Stats'),
+						'modules/mailbox/index.php' => array('fa-envelope', 'Mailbox', array(
+							'modules/mailbox/index.php' => 'Inbox',
+							'modules/mailbox/read-mail.php' => 'Read',
+							'modules/mailbox/compose.php' => 'Compose',
+						))
+					);
+
+					foreach ($pages as $page_url => $page_options):
+
+						$page_icon = $page_options[0];
+						$page_name = $page_options[1];
+						$sub_pages = !empty($page_options[2]) ? $page_options[2] : array();
+						$sub_page_active = isset($page_options[2][$current_path]);
+
+						$active = '';
+						if ($current_path == $page_url || $sub_page_active) {
+							$active = 'active';
+						}
+
+						if (empty($sub_pages)):
+					?>
+					<li class="<?=$active?>"><a href="<?= $page_url ?>"><i class="fa <?= $page_icon ?>"></i> <span><?= $page_name ?></span></a></li>
+					<?php
+						else:
+					?>
+					<li class="treeview <?=$active?>">
+						<a href="<?= $page_url ?>"><i class='fa <?= $page_icon ?>'></i> <span><?= $page_name ?></span> <i class="fa fa-angle-left pull-right"></i></a>
 						<ul class="treeview-menu">
-							<li><a href="modules/mailbox/index.php">Inbox</a></li>
-							<li><a href="modules/mailbox/read-mail.php">Read</a></li>
-							<li><a href="modules/mailbox/compose.php">Compose</a></li>
+							<?php
+							foreach($sub_pages as $sub_page_url => $sub_page_name):
+								$active = '';
+								if ($current_path == $sub_page_url) {
+									$active = 'active';
+								}
+							?>
+							<li class="<?= $active ?>"><a href="<?= $sub_page_url ?>"><?= $sub_page_name ?></a></li>
+							<?php endforeach; ?>
 						</ul>
 					</li>
-					<li><a href="modules/stats/index.php"><i class='fa fa-bar-chart'></i> <span>Stats</span></a></li>
+					<?php
+						endif;
+
+					endforeach;
+					?>
 				</ul><!-- /.sidebar-menu -->
 			</section>
 			<!-- /.sidebar -->
