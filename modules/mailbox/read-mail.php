@@ -1,5 +1,5 @@
 <?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php'; 
+<?php include_once $root_dir.'/partials/header.php';
 
 
 if (empty($_GET['id'])) {
@@ -75,7 +75,7 @@ if (!empty($mail)) {
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-      <!-- jjjjjjjjjj -->           
+      <!-- jjjjjjjjjj -->
                 <div class="mailbox-read-info">
                   <!-- jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj -->
                     <h3>Objet: <?= $mail['objet'] ?></h3>
@@ -104,7 +104,7 @@ if (!empty($mail)) {
                     <li>
                       <span class="mailbox-attachment-icon"><i class="fa fa-file-pdf-o"></i></span>
                       <div class="mailbox-attachment-info">
-                        <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> Sep2014-report.pdf </a>
+                        <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i><?= $mail['received'] ?><!-- Sep2014-report.pdf  --></a>
                         <span class="mailbox-attachment-size">
                           1,245 KB
                           <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
@@ -153,7 +153,7 @@ if (!empty($mail)) {
                 </div><!-- /.box-footer -->
               </div><!-- /. box -->
 
-              
+
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
