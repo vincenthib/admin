@@ -27,13 +27,13 @@ $fields = array(
 
 
 if ($action == 'draft' && !empty($id)) {
-    // $query = $db->prepare('SELECT * FROM mailbox WHERE id = :id');
-    // $query->bindValue('id', $id, PDO::PARAM_INT);
-    // $query->execute();
-    // $movie = $query->fetch();
-    // if (empty($movie)) {
-    //     exit('Undefined movie');
-    // }
+    $query = $db->prepare('SELECT * FROM mailbox WHERE id = :id');
+    $query->bindValue('id', $id, PDO::PARAM_INT);
+    $query->execute();
+    $mailbox = $query->fetch();
+    if (empty($mailbox)) {
+        exit('Undefined mailbox');
+    }
 }
 
 
@@ -45,13 +45,16 @@ foreach($fields as $field_name => $field_params) {
     }
 }
 $errors = array();
-// $attachment = '';
+
 if (!empty($_POST)) {
     foreach($fields as $field_name => $field_params) {
         if ($field_params['required'] !== false && empty($_POST[$field_name])) {
             $error_label = !empty($field_params['error']) ? $field_params['error'] : $field_name.' est obligatoire';
             $errors[$field_name] = $error_label;
         }
+    }
+    if(empty($destinataire) || !filter_var($destinataire, FILTER_VALIDATE_EMAIL)) {
+        $errors['destinataire'] = 'Vous devez renseigner une adresse mail valide.';
     }
     if (empty($errors)) {
 
@@ -66,27 +69,35 @@ if (!empty($_POST)) {
             move_uploaded_file($_FILES['attachment']['tmp_name'], $filename);
         }
 
-        // if ($action == 'update') {
-        //     $query = $db->prepare('UPDATE movies SET slug = :slug, title = :title, year = :year, genres = :genres, synopsis = :synopsis, directors = :directors, actors = :actors, writers = :writers, runtime = :runtime, mpaa = :mpaa, rating = :rating, popularity = :popularity, poster_flag = :poster_flag, modified = NOW() WHERE id = :id');
-        //     $query->bindValue('id', $id, PDO::PARAM_INT);
-        // } else {
-            $query = $db->prepare('INSERT INTO mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, received = NOW()');
-        //}
+        $draft = $action == 'draft';
+
+        if (!empty($id)) {
+            $query = $db->prepare('UPDATE mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, draft = :draft, date = NOW() WHERE id = :id');
+            $query->bindValue('id', $id, PDO::PARAM_INT);
+        } else {
+            $sql = 'INSERT INTO mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, draft = :draft';
+
+            if (!$draft) {
+                $sql .= ', date = NOW()';
+            }
+            $query = $db->prepare($sql);
+        }
+        $query->bindValue('draft', $draft);
         $query->bindValue('destinataire', $destinataire);
         $query->bindValue('objet', $objet);
         $query->bindValue('message', $message);
         $query->bindValue('attachment', $attachment);
         $query->execute();
-        // if ($action == 'update') {
-        //     $result = $query !== false && empty(intval($query->errorCode()));
-        //     $id = $movie['id'];
-        // } else {
+        if ($action == 'draft') {
+            $result = $query !== false && empty(intval($query->errorCode()));
+            $id = $mailbox['id'];
+        } else {
             $id = $result = $db->lastInsertId();
-        //}
+        }
         if (empty($result)) {
             echo '<div class="alert alert-danger" role="danger">Une erreur est survenue</div>';
         } else {
-            echo '<div class="alert alert-success" role="success">Votre message bien été '.($action == 'update' ? 'modifié' : 'envoyé').'</div>';
+            echo '<div class="alert alert-success" role="success">Votre message bien été '.($action == 'draft' ? 'enregistré' : 'envoyé').'</div>';
             //echo redirectJs('movies.php');
         }
         goto end;
@@ -123,10 +134,10 @@ if (!empty($_POST)) {
     <div class="box-body no-padding">
       <ul class="nav nav-pills nav-stacked">
         <li><a href="modules/mailbox/index.php"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right">12</span></a></li>
-        <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-        <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-        <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
-        <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+        <li><a href="modules/mailbox/sent.php"><i class="fa fa-envelope-o"></i> Sent</a></li>
+        <li><a href="modules/mailbox/drafts.php"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+        <li><a href="modules/mailbox/junk.php"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
+        <li><a href="modules/mailbox/trash.php"><i class="fa fa-trash-o"></i> Trash</a></li>
     </ul>
 </div><!-- /.box-body -->
 </div><!-- /. box -->
@@ -189,29 +200,41 @@ if (!empty($_POST)) {
                       <i class="fa fa-paperclip"></i> Attachment
                       <input type="<?= $type ?>" name="<?= $field_name ?>"/>
                   </div>
+                  <!-- <p class="help-block"><?= $field_name ?></p> -->
                   <p class="help-block">Max. 32MB</p>
               </div>
             </div>
 
-            <?php } else { ?>
+            <?php } elseif ($type === 'text') { ?>
             <div class="form-group"<?= $type == 'hidden' ? ' style="display:none"' : '' ?>>
                 <!--label for="<?= $field_name ?>" class="col-sm-2 control-label"><?= $label ?></label -->
                 <div class="col-sm-12">
                 <input class="form-control" type="<?= $type ?>" id="<?= $field_name ?>" name="<?= $field_name ?>" class="form-control" placeholder="<?= $label ?>:" value="<?= $$field_name ?>">
                 </div>
             </div>
-            <?php
-        }
+        <?php } /*else { ?>
+
+
+        <?php } */
     }
     ?>
 
 </div><!-- /.box-body -->
+
 <div class="box-footer">
-  <div class="pull-right">
-    <button class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
-    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
-</div>
-<button class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+
+    <a href="drafts.php?action=draft&id=<?= $id ?>">
+        <button class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
+    </a>
+    <a href="delete.php?action=delete&id=<?= $id ?>">
+        <button class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+    </a>
+
+    <div class="pull-right">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i>
+            Send
+        </button>
+    </div>
 </form>
 
 </div><!-- /.box-footer -->

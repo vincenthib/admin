@@ -52,4 +52,10 @@
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-md-12">
+						<?php include "partials/line-years.php"; ?>
+					</div>
+				</div>
+
 <?php include_once 'partials/footer-charts.php' ?>

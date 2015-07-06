@@ -1,6 +1,11 @@
 <?php ob_start(); ?>
 <?php
 require_once 'config.php';
+
+if ($current_page != 'login.php' && $current_page != 'register.php' && !user_isLogged()) {
+	header('Location: '.$root_path.'modules/users/login.php?from='.$current_path);
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <!--
