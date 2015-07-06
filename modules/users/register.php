@@ -124,7 +124,7 @@ if (!empty($_POST)) {
 
 			$crypted_password = password_hash($password, PASSWORD_BCRYPT);
 
-			$query = $db->prepare('INSERT INTO users (lastname, firstname, email, pass, newsletter, register_date) VALUES (:lastname, :firstname, :email, :password, :newsletter, NOW())');
+			$query = $db->prepare('INSERT INTO users (lastname, firstname, email, password, newsletter, register_date) VALUES (:lastname, :firstname, :email, :password, :newsletter, NOW())');
 			$query->bindValue('lastname', $lastname);
 			$query->bindValue('firstname', $firstname);
 			$query->bindValue('email', $email);
