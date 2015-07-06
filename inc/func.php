@@ -22,3 +22,20 @@ function getMonthLabel($month) {
 	}
 	return $month_labels[$month];
 }
+
+function debug($array) {
+	echo '<pre>';
+	print_r($array);
+	echo '</pre>';
+	//echo '<pre>'.print_r($array, true).'</pre>';
+}
+
+function redirectJS($url, $delay = 1) {
+	return '
+	<script>
+	setTimeout(function() {
+		location.href = "'.$url.'";
+	}, '.($delay * 1000).');
+	</script>
+	';
+}
