@@ -24,4 +24,9 @@
 		</div>
 
 	</div><!-- /.box-body -->
+
+	<div class="loader overlay">
+		<i class="fa fa-refresh fa-spin"></i>
+	</div>
+
 </div><!-- /.box -->
