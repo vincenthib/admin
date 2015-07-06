@@ -47,9 +47,15 @@
 				</div>
 
 				<div class="row">
+					
 					<div class="col-md-3">
 						<?php include "partials/nb-movies.php"; ?>
 					</div>
+				
+					<div class="col-md-3">
+						<?php include "partials/user_numb.php"; ?>
+					</div>
+
 				</div>
 
 				<div class="row">
