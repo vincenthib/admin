@@ -1,5 +1,3 @@
-<?php require_once $root_dir.'/modules/stats/user-stats-data.php' ?>
-
 <!-- AREA CHART -->
 <div class="box box-primary">
 	<div class="box-header with-border">
@@ -14,4 +12,7 @@
 			<canvas id="areaChart" height="250"></canvas>
 		</div>
 	</div><!-- /.box-body -->
+	<div class="loader overlay">
+      <i class="fa fa-refresh fa-spin"></i>
+    </div>
 </div><!-- /.box -->

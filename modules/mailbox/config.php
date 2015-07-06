@@ -5,5 +5,6 @@ $css_files = array(
 	'plugins/fullcalendar/fullcalendar.min.css' => '',
 	'plugins/fullcalendar/fullcalendar.print.css' => 'print',
 	'plugins/iCheck/flat/blue.css' => '',
-	'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'
+	'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' => '',
+	'modules/mailbox/css/mailbox-styles.css' => ''
 );

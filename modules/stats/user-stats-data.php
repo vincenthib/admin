@@ -1,4 +1,6 @@
 <?php
+include_once 'config.php';
+//include_once $root_dir.'/inc/func.php';
 
 $users_stats = array();
 
@@ -33,5 +35,10 @@ $users_stats_result['datasets'][] = array(
   'label'=>"Inscriptions",
   'data' => array_values($users_stats)
 );
+
+sleep(2);
+
+echo json_encode($users_stats_result);
+
 
 ?>
