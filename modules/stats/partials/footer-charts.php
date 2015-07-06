@@ -81,6 +81,7 @@ $(function () {
 				$('#pieChart').find('.chart-legend').append('<li><i class="fa fa-circle" style="color: '+color+'">'+label+'</i></li>');
 			}
 		}
+		$('.overlay').hide();
 
 	},
 	error: function(data){

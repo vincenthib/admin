@@ -63,7 +63,6 @@ try {
 			$_SESSION['user_id'] = $user_id;
 			$_SESSION['firstname'] = $firstname;
 			$_SESSION['lastname'] = $lastname;
-			$_SESSION['register_date'] = $register_date;
 
 			header('Location: '.$back_link);
 			exit();
@@ -125,7 +124,7 @@ if (!empty($_POST)) {
 
 			$crypted_password = password_hash($password, PASSWORD_BCRYPT);
 
-			$query = $db->prepare('INSERT INTO users (lastname, firstname, email, pass, newsletter, register_date) VALUES (:lastname, :firstname, :email, :password, :newsletter, NOW())');
+			$query = $db->prepare('INSERT INTO users (lastname, firstname, email, password, newsletter, register_date) VALUES (:lastname, :firstname, :email, :password, :newsletter, NOW())');
 			$query->bindValue('lastname', $lastname);
 			$query->bindValue('firstname', $firstname);
 			$query->bindValue('email', $email);
@@ -141,7 +140,6 @@ if (!empty($_POST)) {
 				$_SESSION['user_id'] = $user_id;
 				$_SESSION['firstname'] = $firstname;
 				$_SESSION['lastname'] = $lastname;
-				$_SESSION['register_date'] = $register_date;
 
 				echo '<div class="alert alert-success" role="success">Authentification réussie</div>';
 				echo redirectJS($back_link, 2);
