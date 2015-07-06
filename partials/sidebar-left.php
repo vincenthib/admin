@@ -28,7 +28,7 @@
 
 				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
-					<li class="header">HEADER</li>
+					<li class="header">Navigation</li>
 
 					<?php
 
