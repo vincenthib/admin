@@ -7,5 +7,8 @@ function debug($array) {
 	//echo '<pre>'.print_r($array, true).'</pre>';
 }
 
+function show_bool( $bool ){
+	return $bool ? 'true' : 'false';
+}
 
 ?>

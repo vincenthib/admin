@@ -2,7 +2,7 @@
 require dirname(__DIR__).'/config.php';
 require $root_dir.'/inc/func.php';
 require $root_dir.'/inc/db.php';
-require $root_dir.'/modules/users/user.php';
+require $root_dir.'/inc/user.php';
 ?>
 <!DOCTYPE html>
 <!--

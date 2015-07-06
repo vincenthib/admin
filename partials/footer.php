@@ -39,5 +39,8 @@ fixed layout. -->
 <!-- Google-Code-Prettify -->
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
+<!-- Chat Box -->
+<script src="modules/chat/chatbox.js"></script>
+
 </body>
 </html>

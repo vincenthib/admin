@@ -23,13 +23,14 @@ require_once 'modules/dev_func.php';
 			<section class="content">
 
 <!-- #### chat ################# start -->
-				<?php  include_once '/modules/chat/partial.php';  ?>
+			<?php
+
+			$chat_id = $_SESSION['chat_id'] = 1;
+			include_once '/modules/chat/partial.php';
+			debug($_SESSION);
+
+			 ?>
 <!-- #### chat ################# end -->
-
-
-<!-- #### login ################ start -->
-			<?php debug($_SESSION); ?>
-<!-- #### login ################ end -->
 
 
 			</section><!-- /.content -->
