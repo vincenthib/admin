@@ -15,9 +15,27 @@
 				</ol>
 			</section>
 
-			<!-- Main content -->
-			<?php require_once "donut-genres.php"; ?>
+      <!-- Main content -->
+			<section class="content">
 
+				<!-- Your Page Content Here -->
+				<div class="row">
+					<div class="col-md-6">
+						<?php include_once 'partials/visitor.php' ?>
+					</div>
+					<div class="col-md-6">
+						<?php include_once 'partials/area.php' ?>
+					</div>
+				</div>
 
+				<div class="row">
+					<div class="col-md-6">
+						<?php include 'partials/browser-usage.php' ?>
+					</div>
 
-<?php include_once 'partials/footer-charts3.php' ?>
+					<div class="col-md-6">
+						<?php require_once "donut-genres.php"; ?>
+					</div>
+				</div>
+
+<?php include_once 'partials/footer-charts.php' ?>
