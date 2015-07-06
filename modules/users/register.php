@@ -63,7 +63,6 @@ try {
 			$_SESSION['user_id'] = $user_id;
 			$_SESSION['firstname'] = $firstname;
 			$_SESSION['lastname'] = $lastname;
-			$_SESSION['register_date'] = $register_date;
 
 			header('Location: '.$back_link);
 			exit();
@@ -141,7 +140,6 @@ if (!empty($_POST)) {
 				$_SESSION['user_id'] = $user_id;
 				$_SESSION['firstname'] = $firstname;
 				$_SESSION['lastname'] = $lastname;
-				$_SESSION['register_date'] = $register_date;
 
 				echo '<div class="alert alert-success" role="success">Authentification réussie</div>';
 				echo redirectJS($back_link, 2);
