@@ -4,17 +4,17 @@
 
 
 	<!-- chat box -->
-	<div class="box box-warning direct-chat direct-chat-warning collapsed-box">
+	<div class="box box-warning direct-chat direct-chat-warning">
 				  <div class="box-header with-border">
 					<h3 class="box-title">Direct Chat</h3>
 					<div class="box-tools pull-right">
 					  <span data-toggle="tooltip" title="" class="badge bg-yellow msg-count" data-original-title="0 New Messages">0</span>
-					  <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+					  <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 					  <button class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts"><i class="fa fa-comments"></i></button>
 					  <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 					</div>
 				  </div><!-- /.box-header -->
-				  <div class="box-body" style="display: none;">
+				  <div class="box-body" style="display: block;">
 
 					<!-- Conversations are loaded here -->
 					<div class="direct-chat-messages">
@@ -99,7 +99,7 @@
 					  </ul><!-- /.contatcts-list -->
 					</div><!-- /.direct-chat-pane -->
 				  </div><!-- /.box-body -->
-				  <div class="box-footer" style="display: none;">
+				  <div class="box-footer" style="display: block;">
 					<form action="#" method="post" id="form-chat">
 					  <div class="input-group">
 						<input type="text" name="message" placeholder="Type Message ..." class="form-control msg-send">

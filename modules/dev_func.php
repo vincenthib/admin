@@ -1,7 +1,7 @@
 <?php
 
 function debug($array) {
-	echo '<pre>';
+	echo '<pre class="prettyprint lang-php">';
 	print_r($array);
 	echo '</pre>';
 	//echo '<pre>'.print_r($array, true).'</pre>';

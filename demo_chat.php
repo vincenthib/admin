@@ -1,5 +1,5 @@
 <?php
-require_once 'modules/func_dev.php';
+require_once 'modules/dev_func.php';
 ?>
 <script src="plugins/jQuery/jQuery-2.1.4.min.js" type="text/javascript"></script>
 

@@ -1,6 +1,5 @@
+<?php include_once '../../partials/header.php' ?>
 <?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
-<?php require_once '../../inc/db.php' ?>
 
 <?php
 //compte des mails
