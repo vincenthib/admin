@@ -2,6 +2,9 @@
 <?php include_once $root_dir.'/partials/header.php';
 
 
+$mail_attachements = $db->query('SELECT * FROM mailbox WHERE attachment')->fetchAll();
+
+
 if (empty($_GET['id'])) {
   exit('Paramètre id manquant');
 }
@@ -75,9 +78,10 @@ if (!empty($mail)) {
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-      <!-- jjjjjjjjjj -->
+
+
                 <div class="mailbox-read-info">
-                  <!-- jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj -->
+
                     <h3>Objet: <?= $mail['objet'] ?></h3>
                     <h5><!-- From: support@almsaeedstudio.com --> From: <?= $mail['expediteur'] ?><span class="mailbox-read-time pull-right"><!-- 15 Feb. 2015 11:03 PM --><?= $mail['received'] ?></span></h5>
                   </div><!-- /.mailbox-read-info -->
@@ -99,19 +103,24 @@ if (!empty($mail)) {
                     <p>Thanks,<br>Jane</p> -->
                   </div><!-- /.mailbox-read-message -->
                 </div><!-- /.box-body -->
+
+                <?php foreach ($mailbox_attachements as $key => $mailbox_attachement) {
+                  # code...
+                }
+                ?>
                 <div class="box-footer">
                   <ul class="mailbox-attachments clearfix">
                     <li>
                       <span class="mailbox-attachment-icon"><i class="fa fa-file-pdf-o"></i></span>
                       <div class="mailbox-attachment-info">
-                        <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i><?= $mail['received'] ?><!-- Sep2014-report.pdf  --></a>
+                        <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i><?= $mailbox_attachement['date'] ?><!-- Sep2014-report.pdf  --></a>
                         <span class="mailbox-attachment-size">
                           1,245 KB
                           <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
                         </span>
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <span class="mailbox-attachment-icon"><i class="fa fa-file-word-o"></i></span>
                       <div class="mailbox-attachment-info">
                         <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> App Description.docx</a>
@@ -140,7 +149,7 @@ if (!empty($mail)) {
                           <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
                         </span>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div><!-- /.box-footer -->
                 <div class="box-footer">
