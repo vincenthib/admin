@@ -1,17 +1,13 @@
-<?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
-<?php require_once '../../inc/db.php' ?>
+<?php
+    require_once 'config.php';
+    include_once $root_dir.'/partials/header.php';
+    require_once '../../inc/db.php';
+?>
 
 <?php
 //compte des mails
-      $bindings = array();
 
       $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
-
-      foreach($bindings as $key => $value) {
-         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
-         $query->bindValue($key, $value, $type);
-      }
 
       $query->execute();
       $result = $query->fetch();
@@ -19,6 +15,7 @@
 //fin compte des mails
 
 $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
+$search = !empty($_GET['search']) ? $_GET['search'] : '';
 
 ?>
 <style>
@@ -84,37 +81,54 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
                   <h3 class="box-title">Inbox</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
-                      <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" method="GET" action="index.php"/>
+                    <form method-"GET" action="modules/mailbox/index.php?sort=<?= $sort ?>">
+                      <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" value="<?= $search ?>" method="GET"/>
                       <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
 
-<!--?php
+<?php
 //debut search
-    //if(!empty($_GET['search'])){
+      $count_results = 0;
+      $search_mails = array();
 
-        $search_word = $_GET['search'];
+$bindings = array();
+$sql = 'SELECT * FROM mailbox ';
 
-        $search = $db->query('SELECT * FROM mailbox like '.'%'.$search_word.'%'.' ORDER BY received')->fetchAll();
-        $query->bindValue('search', '%'.$search.'%');
-        $query->execute();
-        $search_mails = $query->fetch();
-     //};
+if (!empty($search)) {
+
+    $sql .= ' WHERE objet like :search OR message like :search ';
+
+    $bindings['search'] = '%'.$search.'%';
+    //$count_results = $query->rowCount();
+ };
+
+$sql .= ' ORDER BY date '.$sort;
+
+$query = $db->prepare($sql);
+foreach($bindings as $key => $value) {
+   $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+   $query->bindValue($key, $value, $type);
+}
+
+$query->execute();
+$file_mails = $query->fetchAll();
 
 //affichage resultat recherche
-      foreach($search_mails as $search_mail){
-?-->
-                <!--tr>
+     /* foreach($search_mails as $search_mail){
+?>
+                <tr>
+                    <h1 class="page-header"><?= $count_results ?> search results for <?= !empty($search) ? '"'.$search.'"' : '' ?></h1>
                     <td><input type="checkbox" name="checkbox" value="1" ></td>
                     <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
                     <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $search_mail['id'] ?>"><?= $search_mail['destinataire'] ?></a></td>
                     <td class="mailbox-subject"><?= $search_mail['objet'] ?></td>
                     <td class="mailbox-attachment"><?= $search_mail['piece-jointe'] ?></td>
                     <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
-                </tr-->
-<!--?php
-}
+                </tr>
+<?php
+}*/
 //fin affichage resultat recherche
-?-->
+?>
 
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
@@ -167,7 +181,7 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-user"> Expediteur</i></button></td>
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-pencil"> Objet</i></button></td>
                               <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-paperclip"></i></button></td>
-                              <td><a class="head_mail mailbox-name btn btn-default navbar-btn id_date" href="modules/mailbox?sort=<?= $sort== 'DESC' ? 'ASC' : 'DESC' ?>"><i class="i_date glyphicon glyphicon-chevron-<?= $sort== 'DESC' ? 'up' : 'down' ?>"> Date</i></a></td>
+                              <td><a class="head_mail mailbox-name btn btn-default navbar-btn id_date" href="modules/mailbox?sort=<?= $sort== 'DESC' ? 'ASC' : 'DESC' ?>&search=<?= $search ?>"><i class="i_date glyphicon glyphicon-chevron-<?= $sort== 'DESC' ? 'up' : 'down' ?>"> Date</i></a></td>
                             </ul>
 <!--changement chevron date OK-->
 
@@ -179,13 +193,13 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
   //affichage liste mail
 
 
-                              $file_mails = $db->query('SELECT * FROM mailbox ORDER BY received '.$sort)->fetchAll();
+
 
                              foreach($file_mails as $file_mail){
     //debut timer reception OK
                                 /*$local_time = date("Y-m-d H:i:s");
                                 $to_time = strtotime($local_time);
-                                $from_time = strtotime($file_mail['received']);
+                                $from_time = strtotime($file_mail['date']);
                                 $time = round(abs($to_time - $from_time));
 
                                 $day = floor($time / (24*3600));
@@ -201,9 +215,9 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
                                 $timer = $day.' jrs '.$hours_plus.':'.$minutes.':'.$seconds;
                                 */
                               $now = new DateTime();
-                              $date_received = new DateTime($file_mail['received']);
+                              $date_date = new DateTime($file_mail['date']);
 
-                              $timer = $date_received->diff($now)->format("%a jrs %H:%i:%s");
+                              $timer = $date_date->diff($now)->format("%a jrs %H:%i:%s");
 
 
     //fin  timer reception
