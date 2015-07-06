@@ -1,23 +1,29 @@
-<?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
-<?php require_once '../../inc/db.php' ?>
+<?php
+    require_once 'config.php';
+    include_once $root_dir.'/partials/header.php';
+    require_once '../../inc/db.php';
+?>
 
 <?php
 //compte des mails
-      $bindings = array();
 
       $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
-
-      foreach($bindings as $key => $value) {
-         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
-         $query->bindValue($key, $value, $type);
-      }
 
       $query->execute();
       $result = $query->fetch();
       $count_mail = $result['count_mail'];
 //fin compte des mails
+
+$sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
+$search = !empty($_GET['search']) ? $_GET['search'] : '';
+
 ?>
+<style>
+.head_mail{
+  border: none;
+  background-color: #f9f9f9;
+}
+</style>
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -75,9 +81,55 @@
                   <h3 class="box-title">Inbox</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
-                      <input type="text" class="form-control input-sm" placeholder="Search Mail"/>
+                    <form method-"GET" action="modules/mailbox/index.php?sort=<?= $sort ?>">
+                      <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" value="<?= $search ?>" method="GET"/>
                       <span class="glyphicon glyphicon-search form-control-feedback"></span>
                     </div>
+
+<?php
+//debut search
+      $count_results = 0;
+      $search_mails = array();
+
+$bindings = array();
+$sql = 'SELECT * FROM mailbox ';
+
+if (!empty($search)) {
+
+    $sql .= ' WHERE objet like :search OR message like :search ';
+
+    $bindings['search'] = '%'.$search.'%';
+    //$count_results = $query->rowCount();
+ };
+
+$sql .= ' ORDER BY date '.$sort;
+
+$query = $db->prepare($sql);
+foreach($bindings as $key => $value) {
+   $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+   $query->bindValue($key, $value, $type);
+}
+
+$query->execute();
+$file_mails = $query->fetchAll();
+
+//affichage resultat recherche
+     /* foreach($search_mails as $search_mail){
+?>
+                <tr>
+                    <h1 class="page-header"><?= $count_results ?> search results for <?= !empty($search) ? '"'.$search.'"' : '' ?></h1>
+                    <td><input type="checkbox" name="checkbox" value="1" ></td>
+                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                    <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $search_mail['id'] ?>"><?= $search_mail['destinataire'] ?></a></td>
+                    <td class="mailbox-subject"><?= $search_mail['objet'] ?></td>
+                    <td class="mailbox-attachment"><?= $search_mail['piece-jointe'] ?></td>
+                    <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
+                </tr>
+<?php
+}*/
+//fin affichage resultat recherche
+?>
+
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
@@ -102,137 +154,87 @@
                     <table class="table table-hover table-striped">
                       <tbody>
                         <?php
-//affichage liste mail
+//ajout/retrait checkboxes
+                            /*$checkbox = !empty($_POST['checkbox']) ? intval($_POST['checkbox']) : 0;
+                            $query = $db->prepare('INSERT INTO mailbox (checkbox) VALUES (:checkbox');
+                            $query->bindValue('checkbox', $checkbox, PDO::PARAM_INT);
+                            $query->execute();*/
 
-                            $file_mails = $db->query('SELECT * FROM mailbox')->fetchAll();
+//fin ajout/retrait checkbox
+
+//ajout/retrait favoris
+                          /*if( fa-star-o){
+
+                              $query = $db->prepare('SELECT * FROM mailbox UPDATE favoris SET 1 WHERE ');
+
+                              $query->bindValue('lastname', $lastname);
+
+                              $query->execute();
+                              $result = $db->lastInsertId();
+                          }*/
+//fin ajout/retrait favoris
+//navbar inbox
+                        ?>
+                            <ul class="nav nav-tabs">
+                              <td><button class="head_mail mailbox-star btn btn-default navbar-btn"><i class="fa fa-square-o"> </i></button></td>
+                              <td><button class="head_mail mailbox-star btn btn-default navbar-btn"><i class="fa fa-star text-yellow"> Favoris</i></button></td>
+                              <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-user"> Expediteur</i></button></td>
+                              <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-pencil"> Objet</i></button></td>
+                              <td><button class="head_mail mailbox-name btn btn-default navbar-btn"><i class="glyphicon glyphicon-paperclip"></i></button></td>
+                              <td><a class="head_mail mailbox-name btn btn-default navbar-btn id_date" href="modules/mailbox?sort=<?= $sort== 'DESC' ? 'ASC' : 'DESC' ?>&search=<?= $search ?>"><i class="i_date glyphicon glyphicon-chevron-<?= $sort== 'DESC' ? 'up' : 'down' ?>"> Date</i></a></td>
+                            </ul>
+<!--changement chevron date OK-->
+
+
+                        <?php
+//classement date
+
+
+  //affichage liste mail
+
+
+
 
                              foreach($file_mails as $file_mail){
+    //debut timer reception OK
+                                /*$local_time = date("Y-m-d H:i:s");
+                                $to_time = strtotime($local_time);
+                                $from_time = strtotime($file_mail['date']);
+                                $time = round(abs($to_time - $from_time));
+
+                                $day = floor($time / (24*3600));
+                                $hours = floor($time / 3600);
+                                $minutes = floor(($time / 60) % 60);
+                                $seconds = $time % 60;
+
+                                if($hours>24){
+                                    $day = $day + floor($hours / 24);
+                                    $hours_plus = ($hours - (24 * $day));
+                                };
+
+                                $timer = $day.' jrs '.$hours_plus.':'.$minutes.':'.$seconds;
+                                */
+                              $now = new DateTime();
+                              $date_date = new DateTime($file_mail['date']);
+
+                              $timer = $date_date->diff($now)->format("%a jrs %H:%i:%s");
+
+
+    //fin  timer reception
                           ?>
                             <tr>
-                                <td><input type="checkbox" /><?= $file_mail['checkbox'] ?></td>
+                                <td><input type="checkbox" name="checkbox" value="1" <!--?= $checkbox ? 'checked' : '' ?--></td>
                                 <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
                                 <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
                                 <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
-                                <td class="mailbox-attachment"><?= $file_mail['piece-jointe'] ?></td>
-                                <td class="mailbox-date"><?= $file_mail['received'] ?></td>
+                                <td class="mailbox-attachment"><?= $file_mail['attachment'] ?></td>
+                                <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
                             </tr>
-                        <?php
-                          }
+                        <?php }
  //fin liste mail
+
                           ?>
 
-                        <!--tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">28 mins ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">11 hours ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">15 hours ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">Yesterday</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">2 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">2 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">2 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">2 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">2 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">4 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"></td>
-                          <td class="mailbox-date">12 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">12 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">14 days ago</td>
-                        </tr>
-                        <tr>
-                          <td><input type="checkbox" /></td>
-                          <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                          <td class="mailbox-name"><a href="modules/mailbox/read-mail.php">Alexander Pierce</a></td>
-                          <td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>
-                          <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                          <td class="mailbox-date">15 days ago</td>
-                        </tr-->
                       </tbody>
                     </table><!-- /.table -->
                   </div><!-- /.mail-box-messages -->
@@ -330,6 +332,13 @@
             $this.toggleClass("fa-star-o");
           }
         });
+        /*
+        $('a.id_date').on('click', function(){
+            $('i.i_date').toggleClass('glyphicon-chevron-down');
+            $('button.id_date').attr('value, old');
+        });
+        */
+
       });
     </script>
 
