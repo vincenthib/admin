@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-<?php include_once '../../partials/header.php' ?>
-<?php require_once 'config.php' ?>
-=======
 <?php
-    require_once 'config.php';
-    include_once $root_dir.'/partials/header.php';
-    require_once '../../inc/db.php';
-?>
->>>>>>> f94565921487128ddaa340d424ac5ccd396b158b
+require_once 'config.php';
+include_once $root_dir.'/partials/header.php';
 
-<?php
 //compte des mails
 
       $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
