@@ -1,12 +1,11 @@
 <?php 
 
-      $db_movie = getDb('movies');
+$db_movie = getDb('movies');
 
-      $query = $db_movie->prepare('SELECT COUNT(*) as count_movies FROM movies');
-      $query->execute();
-      $result = $query->fetch();
-      $count_movies = $result['count_movies'];
-
+$query = $db_movie->prepare('SELECT COUNT(*) as count_movies FROM movies');
+$query->execute();
+$result = $query->fetch();
+$count_movies = $result['count_movies'];
 
 ?> 
 

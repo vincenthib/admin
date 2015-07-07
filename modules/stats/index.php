@@ -18,27 +18,6 @@
 
 				<!-- Your Page Content Here -->
 				<div class="row">
-					<div class="col-md-6">
-						<?php include_once 'partials/users.php' ?>
-					</div>
-					<div class="col-md-6">
-						<?php include_once 'partials/area.php' ?>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<?php include 'partials/browser-usage.php' ?>
-					</div>
-
-					<div class="col-md-6">
-						<?php include "partials/donut-genres.php"; ?>
-					</div>
-				</div>
-
-
-				<div class="row">
-
 					<div class="col-md-3">
 						<?php include "partials/nb-movies.php"; ?>
 					</div>
@@ -55,6 +34,25 @@
 						<?php include "partials/genres.php"; ?>
 					</div>
 
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<?php include_once 'partials/users.php' ?>
+					</div>
+					<div class="col-md-6">
+						<?php include_once 'partials/area.php' ?>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<?php include 'partials/browser-usage.php' ?>
+					</div>
+
+					<div class="col-md-6">
+						<?php include "partials/donut-genres.php"; ?>
+					</div>
 				</div>
 
 				<div class="row">

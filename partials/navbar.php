@@ -6,6 +6,22 @@
 				<!-- Navbar Right Menu -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+
+
+				<!-- BOUTON OUVRIR USER -->
+				<li class="dropdown chat-menu">
+
+
+							<!-- Menu toggle button -->
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-comments"></i>
+								<span class="label label-warning msg-count-top"></span>
+							</a>
+				</li>
+				<!-- END BOUTON OUVRIR USER -->
+
+
+
 						<!-- Messages: style can be found in dropdown.less-->
 						<li class="dropdown messages-menu">
 							<!-- Menu toggle button -->
@@ -22,7 +38,7 @@
 											<a href="#">
 												<div class="pull-left">
 													<!-- User Image -->
-													<img src="img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+													<img src="img/user2-128x128.jpg" class="img-circle" alt="User Image"/>
 												</div>
 												<!-- Message title and timestamp -->
 												<h4>
@@ -101,16 +117,16 @@
 							<!-- Menu Toggle Button -->
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<!-- The user image in the navbar-->
-								<img src="img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+								<img src="img/user2-128x128.jpg" class="user-image" alt="User Image"/>
 								<!-- hidden-xs hides the username on small devices so only the image appears. -->
-								<span class="hidden-xs">Alexander Pierce</span>
+								<span class="hidden-xs"><?= user_fullname() ?></span>
 							</a>
 							<ul class="dropdown-menu">
 								<!-- The user image in the menu -->
 								<li class="user-header">
-									<img src="img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+									<img src="img/user2-128x128.jpg" class="img-circle" alt="User Image" />
 									<p>
-										Alexander Pierce - Web Developer
+										<?= user_fullname() ?> - Web Developer
 										<small>Member since Nov. 2012</small>
 									</p>
 								</li>
@@ -132,7 +148,12 @@
 										<a href="#" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
+<<<<<<< HEAD
+										<a href="/modules/users/logout.php" class="btn btn-default btn-flat">Sign out</a>
+										<!-- href="/?logout" -->
+=======
 										<a href="modules/users/logout.php" class="btn btn-default btn-flat">Sign out</a>
+>>>>>>> f94565921487128ddaa340d424ac5ccd396b158b
 									</div>
 								</li>
 							</ul>
@@ -144,3 +165,5 @@
 					</ul>
 				</div>
 			</nav>
+
+

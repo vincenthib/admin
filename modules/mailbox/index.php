@@ -1,10 +1,7 @@
 <?php
-    require_once 'config.php';
-    include_once $root_dir.'/partials/header.php';
-    require_once '../../inc/db.php';
-?>
+require_once 'config.php';
+include_once $root_dir.'/partials/header.php';
 
-<?php
 //compte des mails
 
       $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
@@ -16,6 +13,7 @@
 
 $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
 $search = !empty($_GET['search']) ? $_GET['search'] : '';
+$filter = !empty($_GET['filter']) ? $_GET['filter'] : '';
 
 ?>
 <style>
@@ -42,38 +40,11 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
           <div class="row">
             <div class="col-md-3">
               <a href="modules/mailbox/compose.php" class="btn btn-primary btn-block margin-bottom">Compose</a>
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Folders</h3>
-                  <div class='box-tools'>
-                    <button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
-                  </div>
-                </div>
-                <div class="box-body no-padding">
-                  <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                    <li><a href="drafts.php"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                    <li><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
-                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
-                  </ul>
-                </div><!-- /.box-body -->
-              </div><!-- /. box -->
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Labels</h3>
-                  <div class='box-tools'>
-                    <button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
-                  </div>
-                </div>
-                <div class="box-body no-padding">
-                  <ul class="nav nav-pills nav-stacked">
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
-                  </ul>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
+              <?php
+
+              include_once 'partials/sidebar.php';
+              ?>
+
             </div><!-- /.col -->
             <div class="col-md-9">
               <div class="box box-primary">
@@ -92,15 +63,17 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
       $search_mails = array();
 
 $bindings = array();
-$sql = 'SELECT * FROM mailbox ';
+$sql = 'SELECT * FROM mailbox WHERE 1 ';
 
 if (!empty($search)) {
-
-    $sql .= ' WHERE objet like :search OR message like :search ';
-
+    $sql .= ' AND objet like :search OR message like :search ';
     $bindings['search'] = '%'.$search.'%';
     //$count_results = $query->rowCount();
- };
+}
+
+if (!empty($filter)) {
+    $sql .= ' AND '.$filter.' = 1';
+}
 
 $sql .= ' ORDER BY date '.$sort;
 
@@ -186,9 +159,9 @@ $file_mails = $query->fetchAll();
                                             $paperclip = '';
                                       }
                           ?>
-                            <tr>
+                            <tr id="<?= $file_mail['id'] ?>">
                                 <td><input type="checkbox" name="checkbox" value="1" ><!--?= $checkbox ? 'checked' : '' ?--></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                <td id="mailbox-star" class="mailbox-star"><a href="#"><i id="icone-star" class="fa fa-star text-yellow"></i></a></td>
                                 <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
                                 <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
                                 <td class="mailbox-attachment"><i class="attachment glyphicon <?= $paperclip ?>"></td>
@@ -294,16 +267,41 @@ $file_mails = $query->fetchAll();
           if (fa) {
             $this.toggleClass("fa-star");
             $this.toggleClass("fa-star-o");
+
+            var favorite = $this.hasClass("fa-star");
+            var id = $this.closest('tr').attr('id');
+
+          /*$.ajax({
+              url: 'modules/mailbox/update-msg.php',
+              method: 'POST',
+              data: {id: mailbox-star, action:  }
+              dataType: 'json'
+              }).done(function() {
+                $("#mailbox-star").addClass( "fa-star" );
+            })
           }
         });
+                /*$(document).ready(function(){
+            $("#mailbox-star").click(function{
+            $.post(
+              'modules/mailbox/update-msg.php',
+              {
+                $('#icone-star').val()
+              },
+              'text'
+              );
+          });
+        });*/
+
         /*
         $('a.id_date').on('click', function(){
             $('i.i_date').toggleClass('glyphicon-chevron-down');
             $('button.id_date').attr('value, old');
-        });
-        */
+        });*/
 
-      });
+
+
+
     </script>
 
     <!-- AdminLTE for demo purposes -->
