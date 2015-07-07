@@ -97,7 +97,7 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
             <div class="col-md-9">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Inbox</h3>
+                  <h3 class="box-title">Drafts</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
                       <input type="text" class="form-control input-sm" placeholder="Search Mail" name="search" method="GET" action="index.php"/>
