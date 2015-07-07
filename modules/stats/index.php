@@ -19,7 +19,6 @@
 			<section class="content">
 
 				<!-- Your Page Content Here -->
-
 				<div class="row">
 					
 					<div class="col-md-3">
@@ -39,7 +38,7 @@
 					</div>
 
 				</div>
-
+				
 				<div class="row">
 					<div class="col-md-6">
 						<?php include_once 'partials/users.php' ?>

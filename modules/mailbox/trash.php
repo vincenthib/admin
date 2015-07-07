@@ -195,9 +195,9 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
   //affichage liste mail
 
 
-                              $drafts = $db->query('SELECT * FROM mailbox WHERE draft =  1 ORDER BY date '.$sort)->fetchAll();
+                              $deleted_mails = $db->query('SELECT * FROM mailbox WHERE delete = 1 ORDER BY date '.$sort)->fetchAll();
 
-                             foreach($drafts as $draft){
+                             foreach($deleted_mails as $deleted_mail){
     //debut timer reception OK
                                 /*$local_time = date("Y-m-d H:i:s");
                                 $to_time = strtotime($local_time);
@@ -217,7 +217,7 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
                                 $timer = $day.' jrs '.$hours_plus.':'.$minutes.':'.$seconds;
                                 */
                               $now = new DateTime();
-                              $date = new DateTime($draft['date']);
+                              $date = new DateTime($deleted_mail['date']);
 
                               $timer = $date->diff($now)->format("%a jrs %H:%i:%s");
 
@@ -227,9 +227,9 @@ $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
                             <tr>
                                 <td><input type="checkbox" name="checkbox" value="1" <!--?= $checkbox ? 'checked' : '' ?--></td>
                                 <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $draft['id'] ?>"><?= $draft['destinataire'] ?></a></td>
-                                <td class="mailbox-subject"><?= $draft['objet'] ?></td>
-                                <td class="mailbox-attachment"><?= $draft['attachment'] ?></td>
+                                <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $deleted_mail['id'] ?>"><?= $deleted_mail['destinataire'] ?></a></td>
+                                <td class="mailbox-subject"><?= $deleted_mail['objet'] ?></td>
+                                <td class="mailbox-attachment"><?= $deleted_mail['attachment'] ?></td>
                                 <td class="mailbox-date">Recu depuis <b><?= $timer ?></b></td>
                             </tr>
                         <?php }
