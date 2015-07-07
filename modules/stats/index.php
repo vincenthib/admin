@@ -1,6 +1,4 @@
-<?php require_once 'config.php';
-      require_once 'db.php';
- ?>
+<?php require_once 'config.php'; ?>
 <?php include_once $root_dir.'/partials/header.php';?>
 
 			<!-- Content Header (Page header) -->
@@ -20,11 +18,10 @@
 
 				<!-- Your Page Content Here -->
 				<div class="row">
-					
 					<div class="col-md-3">
 						<?php include "partials/nb-movies.php"; ?>
 					</div>
-				
+
 					<div class="col-md-3">
 						<?php include "partials/user_numb.php"; ?>
 					</div>
@@ -38,7 +35,7 @@
 					</div>
 
 				</div>
-				
+
 				<div class="row">
 					<div class="col-md-6">
 						<?php include_once 'partials/users.php' ?>
