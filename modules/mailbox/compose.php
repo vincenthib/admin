@@ -174,7 +174,7 @@ if (!empty($_POST)) {
 	  <a href="modules/mailbox/index.php" class="btn btn-primary btn-block margin-bottom">Back to Inbox</a>
 		<?php
 
-		include_once 'sidebar.php';
+		include_once 'partials/sidebar.php';
 		?>
 
 </div><!-- /.col -->
