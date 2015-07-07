@@ -2,7 +2,7 @@
 <?php include_once $root_dir.'/partials/header.php';
 
 
-$mail_attachements = $db->query('SELECT * FROM mailbox WHERE attachment')->fetchAll();
+$mailbox_attachements = $db->query('SELECT * FROM mailbox WHERE attachment')->fetchAll();
 
 
 if (empty($_GET['id'])) {
@@ -52,7 +52,7 @@ if (!empty($mail)) {
                 <div class="mailbox-read-info">
 
                     <h3>Objet: <?= $mail['objet'] ?></h3>
-                    <h5><!-- From: support@almsaeedstudio.com --> From: <?= $mail['expediteur'] ?><span class="mailbox-read-time pull-right"><!-- 15 Feb. 2015 11:03 PM --><?= $mail['received'] ?></span></h5>
+                    <h5><!-- From: support@almsaeedstudio.com --> From: <?= $mail['expediteur'] ?><span class="mailbox-read-time pull-right"><!-- 15 Feb. 2015 11:03 PM --><?= $mail['date'] ?></span></h5>
                   </div><!-- /.mailbox-read-info -->
                   <div class="mailbox-controls with-border text-center">
                     <div class="btn-group">
@@ -73,10 +73,10 @@ if (!empty($mail)) {
                   </div><!-- /.mailbox-read-message -->
                 </div><!-- /.box-body -->
 
-                <?php foreach ($mailbox_attachements as $key => $mailbox_attachement) {
+             <?php foreach ($mailbox_attachements as $key => $mailbox_attachement) {
                   # code...
                 }
-                ?>
+                ?> 
                 <div class="box-footer">
                   <ul class="mailbox-attachments clearfix">
                     <li>
