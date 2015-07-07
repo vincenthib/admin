@@ -17,11 +17,14 @@
 			</div>
 
 			<div class="col-md-4">
-				<ul class="chart-legend clearfix">
-					
-				</ul>
+				<ul class="chart-legend clearfix"></ul>
 			</div>
 		</div>
 
 	</div><!-- /.box-body -->
+
+	<div class="loader overlay">
+		<i class="fa fa-refresh fa-spin"></i>
+	</div>
+
 </div><!-- /.box -->

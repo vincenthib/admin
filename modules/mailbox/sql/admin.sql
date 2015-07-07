@@ -33,7 +33,11 @@ CREATE TABLE IF NOT EXISTS `mailbox` (
   `destinataire` text NOT NULL,
   `objet` text NOT NULL,
   `attachment` varchar(255) DEFAULT NULL,
+<<<<<<< HEAD
   `date` datetime DEFAULT CURRENT_TIMESTAMP,
+=======
+  `received` datetime NOT NULL,
+>>>>>>> 76ba93da5abd323509b84e85c53cd5d5987269ca
   `expediteur` text NOT NULL,
   `message` text NOT NULL,
   `draft` tinyint(1) NOT NULL DEFAULT '1',
