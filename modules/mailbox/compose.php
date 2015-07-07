@@ -1,23 +1,63 @@
 <?php require_once 'config.php';
 
 include_once $root_dir.'/partials/header.php';
+// include_once '/inc/func.php';
 
+//compte des mails
+      $bindings = array();
+
+      $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
+
+      foreach($bindings as $key => $value) {
+         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+         $query->bindValue($key, $value, $type);
+      }
+
+      $query->execute();
+      $result = $query->fetch();
+      $count_mail = $result['count_mail'];
+//fin compte des mails
+
+//compte des drafts
+      $bindings_draft = array();
+
+      $query = $db->prepare('SELECT COUNT(*) as count_drafts FROM mailbox WHERE draft = 1');
+
+      foreach($bindings_draft as $key => $value) {
+         $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+         $query->bindValue($key, $value, $type);
+      }
+
+      $query->execute();
+      $result = $query->fetch();
+      $count_drafts = $result['count_drafts'];
+//fin compte des drafts
+
+
+
+
+// Vérification id
 $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+// Vérification paramètre action
 $action = !empty($_GET['action']) ? $_GET['action'] : '';
 
-if ($action == 'delete' && !empty($id)) {
-    $query = $db->prepare('DELETE FROM mailbox WHERE id = :id');
-    $query->bindValue('id', $id, PDO::PARAM_INT);
-    $query->execute();
-    $result = $query->rowCount();
-    if (empty($result)) {
-        echo '<div class="alert alert-danger" role="danger">Une erreur est survenue</div>';
-    } else {
-        echo '<div class="alert alert-success" role="success">Le brouillon a bien été supprimé</div>';
-    }
-    goto end;
-}
+//$draft = !empty($_GET['draft']) ? intval($_GET['draft']) : 1;
 
+// action delete
+// if ($action == 'delete' && !empty($id)) {
+//     $query = $db->prepare('DELETE FROM mailbox WHERE id = :id');
+//     $query->bindValue('id', $id, PDO::PARAM_INT);
+//     $query->execute();
+//     $result = $query->rowCount();
+//     if (empty($result)) {
+//         echo '<div class="alert alert-danger" role="danger">Une erreur est survenue</div>';
+//     } else {
+//         echo '<div class="alert alert-success" role="success">Le brouillon a bien été supprimé</div>';
+//     }
+//     goto end;
+// }
+
+// Champs du formulaire
 $fields = array(
     'destinataire' =>        array('required' => true, 'type' => 'text',       'maxlength' => 255, 'error' => 'Veuillez saisir le mail du destinataire.'),
     'objet' =>       array('required' => true, 'type' => 'text',    'maxlength' => 255, 'error' => 'Votre message n\'a pas d\'obet.'),
@@ -25,7 +65,7 @@ $fields = array(
     'attachment' => array('required' => false, 'type' => 'file')
 );
 
-
+// Création de l'id pour le brouillon - pour rédition du brouillon
 if ($action == 'draft' && !empty($id)) {
     $query = $db->prepare('SELECT * FROM mailbox WHERE id = :id');
     $query->bindValue('id', $id, PDO::PARAM_INT);
@@ -36,16 +76,28 @@ if ($action == 'draft' && !empty($id)) {
     }
 }
 
+// Création de l'id pour le message effacé
+if ($action == 'delete' && !empty($id)) {
+    $query = $db->prepare('SELECT * FROM mailbox WHERE id = :id');
+    $query->bindValue('id', $id, PDO::PARAM_INT);
+    $query->execute();
+    $mailbox = $query->fetch();
+    if (empty($mailbox)) {
+        exit('Undefined mailbox');
+    }
+}
 
 
+// Vérification des champs du formulaire
 foreach($fields as $field_name => $field_params) {
     $$field_name = !empty($_POST[$field_name]) ? $_POST[$field_name] : @$mailbox[$field_name];
     if (empty($$field_name) && !empty($field_params['default'])) {
         $$field_name = $field_params['default'];
     }
 }
-$errors = array();
 
+$errors = array();
+// Gestion des erreurs
 if (!empty($_POST)) {
     foreach($fields as $field_name => $field_params) {
         if ($field_params['required'] !== false && empty($_POST[$field_name])) {
@@ -57,7 +109,7 @@ if (!empty($_POST)) {
         $errors['destinataire'] = 'Vous devez renseigner une adresse mail valide.';
     }
     if (empty($errors)) {
-
+        // Piece-jointe: envoie vers la BD et enregistrement dans le dossier attachments
         $attachment = '';
 
         $max_size = 3200000;
@@ -69,20 +121,39 @@ if (!empty($_POST)) {
             move_uploaded_file($_FILES['attachment']['tmp_name'], $filename);
         }
 
+        // envoi des brouillon dans la BD
+        // $action_draft = $action == 'draft';
+        // $draft = 1;
+        // $sent = 0;
         $draft = $action == 'draft';
+        // $sent = $action == 'draft' = 0;
+
+        // envoi des brouillons dans la corbeille
+        // $delete = $action == 'delete';
 
         if (!empty($id)) {
             $query = $db->prepare('UPDATE mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, draft = :draft, date = NOW() WHERE id = :id');
             $query->bindValue('id', $id, PDO::PARAM_INT);
-        } else {
+        // Si brouillon envoyé dans la corbeille
+        } /*elseif (!empty($id) && $delete) {
+          $query = $db->prepare('UPDATE mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, delete = :delete, date = NOW() WHERE id = :id');
+            $query->bindValue('id', $id, PDO::PARAM_INT);
+        // Si pas brouillon et pas effacé: envoi du message
+       } */
+        else {
             $sql = 'INSERT INTO mailbox SET destinataire = :destinataire, objet = :objet, message = :message, attachment = :attachment, draft = :draft';
+
+            // if($draft){
+            //     $sql .= ' '.$draft;
+            // }
 
             if (!$draft) {
                 $sql .= ', date = NOW()';
             }
             $query = $db->prepare($sql);
         }
-        $query->bindValue('draft', $draft);
+        // $query->bindValue('delete', $delete);
+        $query->bindValue('draft', $draft, PDO::PARAM_INT);
         $query->bindValue('destinataire', $destinataire);
         $query->bindValue('objet', $objet);
         $query->bindValue('message', $message);
@@ -96,11 +167,15 @@ if (!empty($_POST)) {
         }
         if (empty($result)) {
             echo '<div class="alert alert-danger" role="danger">Une erreur est survenue</div>';
-        } else {
+        } /*elseif (empty($result) && $action == 'delete') {
+            echo '<div class="alert alert-danger" role="success">Votre message bien été supprimé</div>';
+            echo redirectJs('modules/mailbox/index.php');
+        } */else {
             echo '<div class="alert alert-success" role="success">Votre message bien été '.($action == 'draft' ? 'enregistré' : 'envoyé').'</div>';
-            //echo redirectJs('movies.php');
+            //echo redirectJs('modules/mailbox/index.php');
         }
         goto end;
+        // exit;
     }
 }
 
@@ -111,7 +186,7 @@ if (!empty($_POST)) {
 <section class="content-header">
   <h1>
     Mailbox
-    <small>13 new messages</small>
+    <small><?= $count_mail ?> new messages</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -133,9 +208,9 @@ if (!empty($_POST)) {
     </div>
     <div class="box-body no-padding">
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="modules/mailbox/index.php"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right">12</span></a></li>
+        <li class="active"><a href="modules/mailbox/index.php"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
         <li><a href="modules/mailbox/sent.php"><i class="fa fa-envelope-o"></i> Sent</a></li>
-        <li><a href="modules/mailbox/drafts.php"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+        <li><a href="modules/mailbox/drafts.php"><i class="fa fa-file-text-o"></i> Drafts<span class="label label-primary pull-right"><?= $count_drafts ?></span></a></li>
         <li><a href="modules/mailbox/junk.php"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
         <li><a href="modules/mailbox/trash.php"><i class="fa fa-trash-o"></i> Trash</a></li>
     </ul>
@@ -207,7 +282,6 @@ if (!empty($_POST)) {
 
             <?php } elseif ($type === 'text') { ?>
             <div class="form-group"<?= $type == 'hidden' ? ' style="display:none"' : '' ?>>
-                <!--label for="<?= $field_name ?>" class="col-sm-2 control-label"><?= $label ?></label -->
                 <div class="col-sm-12">
                 <input class="form-control" type="<?= $type ?>" id="<?= $field_name ?>" name="<?= $field_name ?>" class="form-control" placeholder="<?= $label ?>:" value="<?= $$field_name ?>">
                 </div>
@@ -223,10 +297,11 @@ if (!empty($_POST)) {
 
 <div class="box-footer">
 
-    <a href="drafts.php?action=draft&id=<?= $id ?>">
+    <a href="drafts.php?action=draft&amp;id=<?= $id ?>">
+<!--     <a href="drafts.php?draft=1&amp;id=<?= $id ?>"> -->
         <button class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
     </a>
-    <a href="delete.php?action=delete&id=<?= $id ?>">
+    <a href="delete.php?action=delete&amp;id=<?= $id ?>">
         <button class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
     </a>
 
