@@ -1,6 +1,6 @@
   <div class="small-box bg-red">
                 <div class="inner">
-                  <h3> </h3>
+                  <h3> .</h3>
                   <p>Nombres de visiteurs</p>
                 </div>
                 <div class="icon">
