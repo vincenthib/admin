@@ -16,6 +16,7 @@
 
 $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'DESC';
 $search = !empty($_GET['search']) ? $_GET['search'] : '';
+$filter = !empty($_GET['filter']) ? $_GET['filter'] : '';
 
 ?>
 <style>
@@ -92,15 +93,17 @@ $search = !empty($_GET['search']) ? $_GET['search'] : '';
       $search_mails = array();
 
 $bindings = array();
-$sql = 'SELECT * FROM mailbox ';
+$sql = 'SELECT * FROM mailbox WHERE 1 ';
 
 if (!empty($search)) {
-
-    $sql .= ' WHERE objet like :search OR message like :search ';
-
+    $sql .= ' AND objet like :search OR message like :search ';
     $bindings['search'] = '%'.$search.'%';
     //$count_results = $query->rowCount();
- };
+}
+
+if (!empty($filter)) {
+    $sql .= ' AND '.$filter.' = 1';
+}
 
 $sql .= ' ORDER BY date '.$sort;
 
