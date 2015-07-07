@@ -3,36 +3,6 @@
 include_once $root_dir.'/partials/header.php';
 // include_once '/inc/func.php';
 
-//compte des mails
-	  $bindings = array();
-
-	  $query = $db->prepare('SELECT COUNT(*) as count_mail FROM mailbox WHERE 1');
-
-	  foreach($bindings as $key => $value) {
-		 $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
-		 $query->bindValue($key, $value, $type);
-	  }
-
-	  $query->execute();
-	  $result = $query->fetch();
-	  $count_mail = $result['count_mail'];
-//fin compte des mails
-
-//compte des drafts
-	  $bindings_draft = array();
-
-	  $query = $db->prepare('SELECT COUNT(*) as count_drafts FROM mailbox WHERE draft = 1');
-
-	  foreach($bindings_draft as $key => $value) {
-		 $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
-		 $query->bindValue($key, $value, $type);
-	  }
-
-	  $query->execute();
-	  $result = $query->fetch();
-	  $count_drafts = $result['count_drafts'];
-//fin compte des drafts
-
 // Vérification id
 $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 // Vérification paramètre action
@@ -64,9 +34,9 @@ $fields = array(
 	'attachment' => array('required' => false, 'type' => 'file')
 );
 
-// Création de l'id pour le brouillon - pour rédition du brouillon
+// Création de l'id pour le brouillon - pour rédition du brouillon // AND sent = 1
 if (($action == 'draft' || $action == 'delete') && !empty($id)) {
-	$query = $db->prepare('SELECT * FROM mailbox WHERE id = :id AND trash != 1 AND sent = 1');
+	$query = $db->prepare('SELECT * FROM mailbox WHERE id = :id AND trash != 1');
 	$query->bindValue('id', $id, PDO::PARAM_INT);
 	$query->execute();
 	$mail = $query->fetch();
@@ -202,38 +172,11 @@ if (!empty($_POST)) {
   <div class="row">
 	<div class="col-md-3">
 	  <a href="modules/mailbox/index.php" class="btn btn-primary btn-block margin-bottom">Back to Inbox</a>
-	  <div class="box box-solid">
-		<div class="box-header with-border">
-		  <h3 class="box-title">Folders</h3>
-		  <div class='box-tools'>
-			<button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
-		</div>
-	</div>
-	<div class="box-body no-padding">
-	  <ul class="nav nav-pills nav-stacked">
-		<li class="active"><a href="modules/mailbox/index.php"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right"><?= $count_mail ?></span></a></li>
-		<li><a href="modules/mailbox/sent.php"><i class="fa fa-envelope-o"></i> Sent</a></li>
-		<li><a href="modules/mailbox/drafts.php"><i class="fa fa-file-text-o"></i> Drafts<span class="label label-primary pull-right"><?= $count_drafts ?></span></a></li>
-		<li><a href="modules/mailbox/junk.php"><i class="fa fa-filter"></i> Junk <span class="label label-waring pull-right">65</span></a></li>
-		<li><a href="modules/mailbox/trash.php"><i class="fa fa-trash-o"></i> Trash</a></li>
-	</ul>
-</div><!-- /.box-body -->
-</div><!-- /. box -->
-<div class="box box-solid">
-	<div class="box-header with-border">
-	  <h3 class="box-title">Labels</h3>
-	  <div class='box-tools'>
-		<button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
-	</div>
-</div><!-- /.box-header -->
-<div class="box-body no-padding">
-  <ul class="nav nav-pills nav-stacked">
-	<li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-	<li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-	<li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
-</ul>
-</div><!-- /.box-body -->
-</div><!-- /.box -->
+		<?php
+
+		include_once 'partials/sidebar.php';
+		?>
+
 </div><!-- /.col -->
 <div class="col-md-9">
   <div class="box box-primary">
