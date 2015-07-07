@@ -1,5 +1,10 @@
-<?php ob_start(); ?>
 <?php
+<<<<<<< HEAD
+require dirname(__DIR__).'/config.php';
+require $root_dir.'/inc/func.php';
+require $root_dir.'/inc/db.php';
+require $root_dir.'/inc/user.php';
+=======
 require_once 'config.php';
 /*
 if ($current_page != 'login.php' && $current_page != 'register.php' && !user_isLogged()) {
@@ -7,6 +12,7 @@ if ($current_page != 'login.php' && $current_page != 'register.php' && !user_isL
 	exit();
 }
 */
+>>>>>>> f94565921487128ddaa340d424ac5ccd396b158b
 ?>
 <!DOCTYPE html>
 <!--
@@ -77,7 +83,7 @@ desired effect
 		<header class="main-header">
 
 			<!-- Logo -->
-			<a href="index2.html" class="logo">
+			<a href="index.php" class="logo">
 				<!-- mini logo for sidebar mini 50x50 pixels -->
 				<span class="logo-mini"><b>A</b>LT</span>
 				<!-- logo for regular state and mobile devices -->

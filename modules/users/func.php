@@ -1,7 +1,30 @@
 <?php
 
+define('REMEMBER_ME_SECRET_KEY', $config['cryptage']['REMEMBER_ME_SECRET_KEY']);
 
-define('REMEMBER_ME_SECRET_KEY', 'grain de sable 2015');
+function cryptage_hash ( $password ){
+	if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+		return substr(hash('sha256', $password.'quelquechosedeplus'),0,60);
+	}
+	return password_hash($password, PASSWORD_BCRYPT);
+}
+
+function cryptage_verify( $password, $crypted_password ){
+	if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+		return strcmp( $crypted_password, substr(hash('sha256', $password.'quelquechosedeplus'),0,60) ) === 0;
+	}
+	return password_verify( $password, $crypted_password );
+}
+
+function redirectJS( $url, $delay = 1 ) {
+	return '
+	<script>
+	setTimeout(function() {
+		location.href = "'.$url.'";
+	}, '.($delay * 1000).');
+	</script>
+	';
+}
 
 function getUserToken() {
 	$protocol = $_SERVER['REQUEST_SCHEME']; // Contient le protocole en cours http ou https
@@ -15,7 +38,7 @@ function getUserToken() {
 	return $token;
 }
 
-function setRememberMe($user_id, $expiration) {
+function setRememberMe( $user_id, $expiration ) {
 
 	$current_time = time(); // On définit le timestamp actuel
 
@@ -32,7 +55,7 @@ function setRememberMe($user_id, $expiration) {
 	setcookie('rememberme_token', $crypted_token, $current_time + $expiration);
 }
 
-function getRememberMe($expiration) {
+function getRememberMe( $expiration ) {
 
 	if (empty($_COOKIE['rememberme_data']) || empty($_COOKIE['rememberme_token'])) {
 		return false;

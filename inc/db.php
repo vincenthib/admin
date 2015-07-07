@@ -1,8 +1,8 @@
 <?php
-define('HOST', 'localhost');
-define('USER', 'root');
-define('PASS', '');
-define('DB', 'admin');
+define('HOST', $config['mysql']['HOST']);
+define('USER', $config['mysql']['USER']);
+define('PASS', $config['mysql']['PASS']);
+define('DABA', $config['mysql']['DABA']);
 
 try {
 
@@ -13,7 +13,7 @@ try {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
     );
 
-    $db = getDb(DB);
+    $db = getDb(DABA);
 
 } catch (Exception $e) {
     exit('MySQL Connect Error >> '.$e->getMessage());

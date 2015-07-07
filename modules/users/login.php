@@ -1,6 +1,6 @@
 <?php
-include_once 'config.php';
-include_once $root_dir.'/partials/header.php';
+include '../../partials/header.php';
+require 'func.php';
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -59,7 +59,7 @@ if (!empty($_POST)) {
 
 			$crypted_password = $user['pass'];
 
-			if (password_verify($password, $crypted_password)) {
+			if (cryptage_verify($password, $crypted_password)) {
 
 				if (!empty($remember_me)) {
 					setRememberMe($user['id'], $expiration);
