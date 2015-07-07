@@ -1,8 +1,20 @@
-<?php require_once 'config.php' ?>
-<?php include_once $root_dir.'/partials/header.php' ?>
+<?php require_once 'config.php';?>
+<?php require_once 'db.php'; ?>
+
+
+<?php
+
+include_once $root_dir.'/partials/header.php';
+
+$query = $db -> prepare('SELECT * FROM evenement WHERE persist=:persist');
+$query ->bindValue('persist' , "1" );
+$query -> execute();
+$events = $query -> fetchAll();
+
+?>
 
       <!-- Content Header (Page header) -->
-      <section class="content-header">
+     <!--  <section class="content-header">
         <h1>
           Calendar
           <small>Optional description</small>
@@ -11,7 +23,7 @@
           <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
           <li class="active">Here</li>
         </ol>
-      </section>
+      </section> -->
 
       <!-- Main content -->
       <section class="content">
@@ -40,11 +52,12 @@
                 <div class="box-body">
                   <!-- the events -->
                   <div id='external-events'>
-                    <div class='external-event bg-green'>Lunch</div>
-                    <div class='external-event bg-yellow'>Go home</div>
-                    <div class='external-event bg-aqua'>Do homework</div>
-                    <div class='external-event bg-light-blue'>Work on UI design</div>
-                    <div class='external-event bg-red'>Sleep tight</div>
+                  <?php foreach ($events as $event) { ?>
+
+                    <div id="<?php echo $event['id'] ?>" style="background-color:<?php echo $event['color'] ?>"class='external-event'><?= $event['title']?></div>
+                   <?php } ?>
+
+
                     <div class="checkbox">
                       <label for='drop-remove'>
                         <input type='checkbox' id='drop-remove' />

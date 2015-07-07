@@ -1,8 +1,18 @@
 <?php
+<<<<<<< HEAD
 require dirname(__DIR__).'/config.php';
 require $root_dir.'/inc/func.php';
 require $root_dir.'/inc/db.php';
 require $root_dir.'/inc/user.php';
+=======
+require_once 'config.php';
+/*
+if ($current_page != 'login.php' && $current_page != 'register.php' && !user_isLogged()) {
+	header('Location: '.$root_path.'modules/users/login.php?from='.$current_path);
+	exit();
+}
+*/
+>>>>>>> f94565921487128ddaa340d424ac5ccd396b158b
 ?>
 <!DOCTYPE html>
 <!--

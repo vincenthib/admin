@@ -148,8 +148,12 @@
 										<a href="#" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
+<<<<<<< HEAD
 										<a href="/modules/users/logout.php" class="btn btn-default btn-flat">Sign out</a>
 										<!-- href="/?logout" -->
+=======
+										<a href="modules/users/logout.php" class="btn btn-default btn-flat">Sign out</a>
+>>>>>>> f94565921487128ddaa340d424ac5ccd396b158b
 									</div>
 								</li>
 							</ul>

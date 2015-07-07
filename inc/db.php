@@ -23,7 +23,3 @@ function getDb($db) {
 	global $db_options;
 	return new PDO('mysql:host='.HOST.';dbname='.$db.'', USER, PASS, $db_options);
 }
-
-/*
-CREATE SCHEMA `admin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-*/

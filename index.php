@@ -6,8 +6,7 @@ try {
 
 	//echo 'Utilisateur connecté : ', (user_isLogged() ? 'true' : 'false');
 
-	//$error = "Erreur pour tester";
-    //throw new Exception($error);
+	debug($_SESSION);
 
 	if ( user_isLogged() ) {
 
