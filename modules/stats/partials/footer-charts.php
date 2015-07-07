@@ -26,6 +26,36 @@
 <!-- page script -->
 
 <script>
+
+function getMaxOfArray(numArray) {
+  return Math.max.apply(null, numArray);
+}
+
+Chart.types.Line.extend({
+	name : "AltLine",
+
+	initialize : function(data) {
+		Chart.types.Line.prototype.initialize.apply(this, arguments);
+		this.scale.draw = function() {
+			/*if (this.display && (this.xLabelRotation > 90)) {
+				this.endPoint = this.height - 5;
+			}*/
+			var labels = [];
+			var count_labels = this.xLabels.length;
+			for(var i in this.xLabels) {
+				var label = ' ';
+				if (i % 5 === 0 || i == count_labels - 1) {
+					label = this.xLabels[i];
+				}
+				labels.push(label);
+			}
+			this.xLabels = labels;
+
+			Chart.Scale.prototype.draw.apply(this, arguments);
+		};
+	}
+});
+
 $(function () {
 	/* ChartJS
 	* -------
@@ -168,10 +198,8 @@ $(function () {
   }
 
   var areaChartData = {
-    labels: <?= json_encode($years) ?>,
+    labels: <?= json_encode(array_keys($movie_years)) ?>,
     datasets: <?= json_encode($line_data) ?>
-
-
   };
 
   var areaChartOptions = {
@@ -187,6 +215,12 @@ $(function () {
     scaleShowHorizontalLines: true,
     //Boolean - Whether to show vertical lines (except Y axis)
     scaleShowVerticalLines: true,
+
+    scaleOverride : true,
+	scaleStartValue : 0,
+	scaleStepWidth : 50,
+	scaleSteps : Math.ceil(getMaxOfArray(areaChartData.datasets[0].data) / 50),
+
     //Boolean - Whether the line is curved between points
     bezierCurve: true,
     //Number - Tension of the bezier curve between points
@@ -207,6 +241,7 @@ $(function () {
     datasetFill: true,
     //String - A legend template
     legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+    tooltipTemplate: "<%= value %> films <%if (label){%>en <%=label%><%}%>",
     //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
     maintainAspectRatio: false,
     //Boolean - whether to make the chart responsive to window resizing
@@ -222,7 +257,7 @@ $(function () {
   var lineChart = new Chart(lineChartCanvas);
   var lineChartOptions = areaChartOptions;
   lineChartOptions.datasetFill = false;
-  lineChart.Line(areaChartData, lineChartOptions);
+  lineChart.AltLine(areaChartData, lineChartOptions);
 
 	$.ajax({
 		url: 'modules/stats/user-stats-data.php',
