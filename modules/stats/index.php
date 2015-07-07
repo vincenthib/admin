@@ -19,8 +19,7 @@
 			<section class="content">
 
 				<!-- Your Page Content Here -->
-
-					<div class="row">
+				<div class="row">
 					
 					<div class="col-md-3">
 						<?php include "partials/nb-movies.php"; ?>
@@ -58,9 +57,6 @@
 						<?php include "partials/donut-genres.php"; ?>
 					</div>
 				</div>
-
-
-			
 
 				<div class="row">
 					<div class="col-md-12">
