@@ -186,9 +186,9 @@ $file_mails = $query->fetchAll();
                                             $paperclip = '';
                                       }
                           ?>
-                            <tr>
+                            <tr id="<?= $file_mail['id'] ?>">
                                 <td><input type="checkbox" name="checkbox" value="1" ><!--?= $checkbox ? 'checked' : '' ?--></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                <td id="mailbox-star" class="mailbox-star"><a href="#"><i id="icone-star" class="fa fa-star text-yellow"></i></a></td>
                                 <td class="mailbox-name"><a href="modules/mailbox/read-mail.php?id=<?= $file_mail['id'] ?>"><?= $file_mail['destinataire'] ?></a></td>
                                 <td class="mailbox-subject"><?= $file_mail['objet'] ?></td>
                                 <td class="mailbox-attachment"><i class="attachment glyphicon <?= $paperclip ?>"></td>
@@ -294,16 +294,41 @@ $file_mails = $query->fetchAll();
           if (fa) {
             $this.toggleClass("fa-star");
             $this.toggleClass("fa-star-o");
+
+            var favorite = $this.hasClass("fa-star");
+            var id = $this.closest('tr').attr('id');
+
+          /*$.ajax({
+              url: 'modules/mailbox/update-msg.php',
+              method: 'POST',
+              data: {id: mailbox-star, action:  }
+              dataType: 'json'
+              }).done(function() {
+                $("#mailbox-star").addClass( "fa-star" );
+            })
           }
         });
+                /*$(document).ready(function(){
+            $("#mailbox-star").click(function{
+            $.post(
+              'modules/mailbox/update-msg.php',
+              {
+                $('#icone-star').val()
+              },
+              'text'
+              );
+          });
+        });*/
+
         /*
         $('a.id_date').on('click', function(){
             $('i.i_date').toggleClass('glyphicon-chevron-down');
             $('button.id_date').attr('value, old');
-        });
-        */
+        });*/
 
-      });
+
+
+
     </script>
 
     <!-- AdminLTE for demo purposes -->
