@@ -6,6 +6,22 @@
 				<!-- Navbar Right Menu -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+
+
+				<!-- BOUTON OUVRIR USER -->
+				<li class="dropdown chat-menu">
+
+
+							<!-- Menu toggle button -->
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-comments"></i>
+								<span class="label label-warning msg-count-top"></span>
+							</a>
+				</li>
+				<!-- END BOUTON OUVRIR USER -->
+
+
+
 						<!-- Messages: style can be found in dropdown.less-->
 						<li class="dropdown messages-menu">
 							<!-- Menu toggle button -->
@@ -145,3 +161,5 @@
 					</ul>
 				</div>
 			</nav>
+
+

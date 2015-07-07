@@ -2,6 +2,14 @@
 
 	$(function() {
 
+	$('.chat-menu').click(function(){
+		$('.direct-chat').show();
+	})
+
+	var $msg_count     = $('.msg-count')
+	var $msg_count_top = $('.msg-count-top')
+	var msg_count = 0
+
 	function push_message( nbr, msg_arr, from_user_id ){
 		var $messages_content = $('.direct-chat-messages')
 		var messages_div = document.createElement( 'div' )
@@ -37,8 +45,11 @@
 				+'  </div><!-- /.direct-chat-msg -->'
 			}
 		$div.html( message_html )
-		var $msg_count = $('.msg-count')
-		$msg_count.text( nbr )
+		$('.direct-chat-messages').scrollTo('max');
+		msg_count++
+		$msg_count.text(     msg_count )
+		$msg_count_top.text( msg_count )
+
 	}
 
 	var i // numéro du message push
@@ -53,7 +64,15 @@
 	var $btn_send = $('.btn-send')
 	$btn_send.on('click',function(e){
 		var msg = $('.msg-send').val()
-		push_message( i+1, ['fred','13h30','user4-128x128.jpg', msg], left_right(i) )
+		var data = [{
+			'msg_id'    : i+1,
+			'fullname'  : 'username',
+			'date_sent' : '13h30',
+			'photo'     : 'user2-128x128.jpg',
+			'message'   : msg,
+			'user_id'   : 2,
+		}]
+		push_message( i+1, data, left_right(i) )
 		$('.msg-send').val('')
 		i++
 	})

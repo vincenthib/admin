@@ -35,5 +35,4 @@ require_once 'modules/dev_func.php';
 
 			</section><!-- /.content -->
 
-
 <?php include_once 'partials/footer.php' ?>

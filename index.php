@@ -2,7 +2,7 @@
 
 try {
 	require_once 'config.php';
-	require $root_dir.'/modules/users/user.php';
+	require $root_dir.'/modules/user.php';
 
 	//echo 'Utilisateur connecté : ', (user_isLogged() ? 'true' : 'false');
 
@@ -18,7 +18,7 @@ try {
 
 	} else {
 
-		$url = '/modules/users/login_new.php';
+		$url = '/modules/login_new.php';
 
 	}
 	ob_get_clean();

@@ -41,6 +41,7 @@ fixed layout. -->
 
 <!-- Chat Box -->
 <script src="modules/chat/chatbox.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>
 
 </body>
 </html>
