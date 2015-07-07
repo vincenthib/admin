@@ -2,19 +2,6 @@
 
 	$(function() {
 
-	/*var msg_data = [ // [0] user_name, [1] date, [2] jpg, [3]  message
-		[ "Alexander Pierce", "23 Jan 2:00 pm",  "user1-128x128.jpg",  "Is this template really for free? That's unbelievable!" ],
-		[ "Sarah Bullock", "23 Jan 2:05 pm", "user3-128x128.jpg", "You better believe it!" ],
-	]
-
-	'msg_id'
-'fullname'
-'date_sent'
-'photo'
-'msg'
-'user_id'   */
-
-
 	function push_message( nbr, msg_arr, from_user_id ){
 		var $messages_content = $('.direct-chat-messages')
 		var messages_div = document.createElement( 'div' )
@@ -32,7 +19,7 @@
 				+'	</div><!-- /.direct-chat-info -->'
 				+'	<img class="direct-chat-img" src="/img/'+msg_arr['photo']+'" alt="message user image"><!-- /.direct-chat-img -->'
 				+'	<div class="direct-chat-text">'
-				+   msg_arr[4]
+				+   msg_arr['message']
 				+'	</div><!-- /.direct-chat-text -->'
 				+'  </div><!-- /.direct-chat-msg -->'
 		} else {
@@ -45,7 +32,7 @@
 				+'	</div><!-- /.direct-chat-info -->'
 				+'	<img class="direct-chat-img" src="/img/'+msg_arr['photo']+'" alt="message user image"><!-- /.direct-chat-img -->'
 				+'	<div class="direct-chat-text">'
-				+   msg_arr['msg']
+				+   msg_arr['message']
 				+'	</div><!-- /.direct-chat-text -->'
 				+'  </div><!-- /.direct-chat-msg -->'
 			}
@@ -57,15 +44,11 @@
 	var i // numéro du message push
 	function left_right( i ) { return (i%2==true) }
 
-	/*for( i=0; i<msg_data.length; i++ ){
-		push_message( i+1, msg_data[i], left_right(i) )
-	}*/
-
 	var $form_chat = $('#form-chat')
 	$form_chat.on('submit',function(event){
 		event.preventDefault()
+		$('.btn-send').click();
 	})
-
 
 	var $btn_send = $('.btn-send')
 	$btn_send.on('click',function(e){
@@ -75,7 +58,7 @@
 		i++
 	})
 
-	var last_msg_id = 0
+	var last_msg_id = 0 // dernier message reçu
 
 	function getMessages() {
 	    var xhr = $.getJSON('/modules/chat/ajax.php')

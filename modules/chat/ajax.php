@@ -27,7 +27,7 @@
 				'fullname'  => $fullname,
 				'date_sent' => $message['date_sent'],
 				'photo'     => 'user'.$message['from_user_id'].'-128x128.jpg',
-				'msg'       => $message['message'],
+				'message'   => $message['message'],
 				'user_id'   => $message['to_user_id'],
 			];
 		}
