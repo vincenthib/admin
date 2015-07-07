@@ -45,7 +45,7 @@ $filter = !empty($_GET['filter']) ? $_GET['filter'] : '';
               <a href="modules/mailbox/compose.php" class="btn btn-primary btn-block margin-bottom">Compose</a>
               <?php
 
-              include_once 'sidebar.php';
+              include_once 'partials/sidebar.php';
               ?>
 
             </div><!-- /.col -->
