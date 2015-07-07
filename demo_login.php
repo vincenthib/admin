@@ -1,8 +1,7 @@
-<?php include_once 'partials/header.php' ?>
-<?php require_once 'modules/dev_func.php' ?>
-
-
-
+<?php
+require_once 'config.php';
+include_once $root_dir.'/partials/header.php';
+?>
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>

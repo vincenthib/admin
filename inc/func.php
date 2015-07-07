@@ -39,3 +39,7 @@ function redirectJS($url, $delay = 1) {
 	</script>
 	';
 }
+
+function show_bool( $bool ){
+	return $bool ? 'true' : 'false';
+}

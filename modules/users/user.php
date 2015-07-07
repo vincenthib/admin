@@ -1,7 +1,4 @@
 <?php
-//session_name('admin_session');
-//session_start();
-
 function user_id(){
 	return !empty($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
 }
